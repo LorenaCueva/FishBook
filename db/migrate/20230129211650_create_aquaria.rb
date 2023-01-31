@@ -1,15 +1,14 @@
 class CreateAquaria < ActiveRecord::Migration[6.1]
   def change
     create_table :aquaria do |t|
+      t.integer :user_id, foreign_key: true
       t.string :image_url
       t.string :comments
-      t.string :type
+      t.string :water_type
       t.string :name
-      t.string :size
+      t.integer :galons
       t.string :filter
       t.string :heater
-
-      t.belongs_to :user, null: false, foreign_key: true
 
       t.timestamps
     end

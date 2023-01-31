@@ -1,8 +1,8 @@
 class Aquarium < ApplicationRecord
     belongs_to :user
-    validates :type, presence: true
-    validates :size, presence: true
+    validates :water_type, presence: true
+    validates :galons, presence: true
+    validates :galons, numericality: { only_integer: true }
     validates :name, presence: true
-    validates :type, inclusion {in ["Freshwater", "Saltwater"]}
 
 end

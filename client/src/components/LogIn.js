@@ -16,7 +16,8 @@ function LogIn({user = null, setUser}){
         if (user){
             navigate('/myAquariums');
         }
-    },[user,navigate])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[user])
 
     function handleFormChange(e){
         const name = e.target.name;
@@ -41,7 +42,7 @@ function LogIn({user = null, setUser}){
             if(res.ok){
                 res.json().then(user => {
                     setUser(user);
-                    // navigate("/myAquariums")
+                    navigate("/myAquariums")
                 })
             }
             else {
@@ -64,7 +65,7 @@ function LogIn({user = null, setUser}){
             if(res.ok){
                 res.json().then(user => {
                     setUser(user);
-                    // navigate('/myAquariums')
+                    navigate('/myAquariums')
                 })
             }
             else {
