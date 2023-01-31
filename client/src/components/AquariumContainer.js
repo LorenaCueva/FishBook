@@ -62,7 +62,6 @@ function AquariumContainer({user, showAll}){
             aux = arr.pop()
         }
         for(let i = 0; i < arr.length; i = i+2){
-            // res.push(<div className="row" key={i}><div className="col s6">{arr[i]}</div><div className="col s6">{arr[i+1]}</div></div>)
             res.push(<AquariumCardRow key={i} card1={arr[i]} card2={arr[i+1]}/>)
         }
         if(aux){
@@ -75,12 +74,12 @@ function AquariumContainer({user, showAll}){
     if (user){
         return(
             <div>
-                <h4>My Aquariums</h4>
+                <h4>Title</h4>
                 {showAll ? null : <div className="padding-top"><button className="btn waves-effect waves-light" onClick={toggleShowForm}><i className="material-icons left">add_box</i>Add Aquarium</button></div>}
                 {showForm ? 
                     <div className="row">
                         <div className="col s6 offset-s3">
-                            <AquariumForm showForm={toggleShowForm} onAddAquarium={handleAddAquarium}/>
+                            <AquariumForm showForm={toggleShowForm} onSubmitForm={handleAddAquarium}/>
                         </div>
                     </div>: null}
                 {setCards(aquariumsToRender)}

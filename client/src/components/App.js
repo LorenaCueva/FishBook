@@ -32,7 +32,7 @@ function App() {
   
     return (
       <div className="App container">
-        <h3>FishBook!</h3>
+        <h4>Logo</h4>
         <BrowserRouter>
           <Routes>
             <Route index element={<LogIn user={user} setUser={setUser}/>}></Route>

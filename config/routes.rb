@@ -11,8 +11,6 @@ Rails.application.routes.draw do
   
   get "/me", to: "users#show"
 
-  # get "/myAquariums", to: "my_aquaria#index"
-
   get "/aquariums", to: "aquaria#index"
   post "/aquariums", to: "aquaria#create"
   delete "/aquariums/:id", to: "aquaria#destroy"
