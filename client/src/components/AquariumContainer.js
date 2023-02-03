@@ -3,16 +3,19 @@ import { useNavigate } from "react-router-dom";
 import AquariumCard from "./AquariumCard";
 import AquariumForm from "./AquariumForm";
 import AquariumCardRow from "./AquariumCardRow";
+import FishContainer from "./FishContainer";
 
 function AquariumContainer({user, showAll}){
 
 
-   const [aquariums, setAquariums] = useState([])
+   const [aquariums, setAquariums] = useState([]);
    const [showForm, setShowForm] = useState(false);
+   const [showInfo, setShowInfo] = useState(false);
    
    const navigate = useNavigate();
 
    let showAquariums = aquariums;
+//    setShowInfo(false);
 
     useEffect(() => {
         if(user == null){
@@ -21,18 +24,24 @@ function AquariumContainer({user, showAll}){
         else{
             fetch("/aquariums")
             .then(res => res.json())
-            .then(aquariums => setAquariums(aquariums))
+            .then(aquariums => {
+                console.log("here")
+                setAquariums(aquariums)})
             .catch(error => console.log(error))
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[user])
+
+    useEffect(() => {
+            setAquariums(aquariums)
+            setShowInfo(false);
+    },[navigate])
 
     function toggleShowForm(){
         setShowForm((showForm)=>!showForm)
     }
 
     function handleAddAquarium(newAquarium){
-        // toggleShowForm();
         setAquariums([newAquarium, ...aquariums])
     }
 
@@ -46,19 +55,26 @@ function AquariumContainer({user, showAll}){
         setAquariums(newAquariums)
     }
 
-    if(showAll){
-        showAquariums = aquariums.filter(aquarium => aquarium.user_id !== user.id)
+    function handleCardClick(id){
+        showInfo == false ? setShowInfo(id) : setShowInfo(false)
     }
+
+    if(showInfo){
+        showAquariums = aquariums.filter(aquarium => aquarium.id === showInfo)
+    }
+    else if(showAll){
+        showAquariums = aquariums.filter(aquarium => aquarium.user_id !== user.id)
+    } 
     else{
         showAquariums = aquariums.filter(aquarium => aquarium.user_id === user.id)
     }
 
-    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} editable={user.id === aquarium.user_id} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium}></AquariumCard>)
+    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} editable={user.id === aquarium.user_id} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick}></AquariumCard>)
 
     function setCards(arr){
         let aux = null;
         let res = [];
-        if(arr.length % 2 !== 0){
+        if(arr.length > 2 && arr.length % 2 !== 0){
             aux = arr.pop()
         }
         for(let i = 0; i < arr.length; i = i+2){
@@ -82,7 +98,8 @@ function AquariumContainer({user, showAll}){
                             <AquariumForm showForm={toggleShowForm} onSubmitForm={handleAddAquarium}/>
                         </div>
                     </div>: null}
-                {setCards(aquariumsToRender)}
+                {showInfo ? <div className="row"><div className="col s6 offset-s3">{aquariumsToRender}</div></div> : setCards(aquariumsToRender)}
+                {showInfo ? <FishContainer aquariumId={showInfo}/> : null}
 
             </div>
             

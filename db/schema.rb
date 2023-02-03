@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_01_29_211650) do
+ActiveRecord::Schema.define(version: 2023_02_02_223422) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,34 @@ ActiveRecord::Schema.define(version: 2023_01_29_211650) do
     t.integer "galons"
     t.string "filter"
     t.string "heater"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "fish", force: :cascade do |t|
+    t.string "name"
+    t.string "care_level"
+    t.string "temperament"
+    t.string "image_url"
+    t.string "lifespan"
+    t.float "size"
+    t.string "diet"
+    t.string "water_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "housings", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "fish_id"
+    t.integer "aquarium_id"
+    t.string "name"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "aquarium_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -1,11 +1,15 @@
 class AquariaController < ApplicationController
-    before_action :find_aquarium, only:[:destroy, :update]
+    before_action :find_aquarium, only:[:destroy, :update, :show]
     before_action :authorize, only:[:index]
 
     
     def index
         aquariums = Aquarium.all.order(created_at: :desc)
         render json: aquariums, status: :ok
+    end
+
+    def show
+        render json: @aquarium, serializer: AquariumInfoSerializer, status: :ok
     end
 
     def update

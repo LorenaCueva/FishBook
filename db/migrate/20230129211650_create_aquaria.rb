@@ -1,7 +1,7 @@
 class CreateAquaria < ActiveRecord::Migration[6.1]
   def change
     create_table :aquaria do |t|
-      t.integer :user_id, foreign_key: true
+      t.integer :user_id
       t.string :image_url
       t.string :comments
       t.string :water_type

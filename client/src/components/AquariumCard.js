@@ -1,24 +1,33 @@
-import { freshWaterColor, saltwaterColor, headerTextColor } from "../Colors";
+import { freshWaterColor, saltwaterColor, headerTextColor, hoverColor} from "../Colors";
 import { useState } from "react";
 import AquariumForm from "./AquariumForm";
+import { useNavigate } from "react-router-dom";
 
-function AquariumCard({aquarium, editable, onDelete, onEdit }){
+function AquariumCard({aquarium, editable, onDelete, onEdit, onCardClick}){
+
+    const {id, name, galons, filter, heater, comments, by, water_type, image_url} = aquarium;
 
     const [isOnEdit, setIsOnEdit] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
+    const navigate = useNavigate();
+
 
     const color = aquarium.water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
+    let hoveringColor = isHovering? hoverColor : color;
+
+
     ///change this
-    let image = aquarium.image_url == "" ? "https://yt3.ggpht.com/a/AGF-l79cTJfjYOT2b3PnM6HWCh9rZFE_yekVHnlb4Q=s900-c-k-c0xffffffff-no-rj-mo" : aquarium.image_url;
+    let image = image_url == "" || null ? "../fish_bowl.png" : image_url;
 
 
         function handleDelete(){
-            fetch(`/aquariums/${aquarium.id}`,{
+            fetch(`/aquariums/${id}`,{
                 method: "DELETE"
             })
             .then(r => {
                 if(r.ok){
-                    onDelete(aquarium.id)
+                    onDelete(id)
                 }
                 else{
                     r.json().then(error => console.log(error))
@@ -34,43 +43,68 @@ function AquariumCard({aquarium, editable, onDelete, onEdit }){
             onEdit(edit)
         }
 
-        // console.log(onEdit)
+        // function handleAddFish(){
+        //     console.log("fish")
+        // }
 
+        function handleCardClick(){
+            onCardClick(id)
+        }
+
+        const handleMouseEnter = () => {
+            setIsHovering(true);
+          };
+        
+          const handleMouseLeave = () => {
+            setIsHovering(false);
+          };
+        
     if(!isOnEdit){
         return(
-            <ul className={`collection with-header left-align`}>
-                <li className={`collection-header ${color}`}>
+            <div>
+            <ul className={`collection with-header left-align`} onClick={handleCardClick} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+                <li className={`collection-header ${hoveringColor}`}>
                     <div className="secondary-content">
                             {editable ?
                                 <div className="white-text">
                                     <i className="padding-center small material-icons white-text" onClick={toggleEdit}>edit</i>
                                     <i className="padding-center small material-icons white-text" onClick={handleDelete}>delete</i>
+                                    {/* <i className="padding-center small material-icons white-text" onClick={handleAddFish}>add_circle</i> */}
                                 </div>
                             : null}
                         </div>
-                    <h5 className={`${headerTextColor}-text`}>{aquarium.name}</h5></li>
-                <li className="collection-item right-align">
-                    <span>By: {aquarium.by}</span>
+                    <h5 className={`${headerTextColor}-text`}>{name}</h5>
                 </li>
+                {/* <li className="collection-item right-align">
+                    <span>By: {aquarium.by}</span>
+                </li> */}
                 <li className="center-align collection-item">
                     <img src={image}/>
                 </li>
-                <li className="collection-item">
+                {/* <li className="collection-item">
                     <span>Type: {aquarium.water_type}</span>
+                </li> */}
+                <li className="collection-item">
+                    <span>Galons: {galons}</span>
                 </li>
                 <li className="collection-item">
-                    <span>Galons: {aquarium.galons}</span>
+                    <span>Filter: {filter}</span>
                 </li>
                 <li className="collection-item">
-                    <span>Filter: {aquarium.filter}</span>
+                    <span>Heater: {heater}</span>
                 </li>
                 <li className="collection-item">
-                    <span>Heater: {aquarium.heater}</span>
+                    <span>Comments: {comments}</span>
                 </li>
-                <li className="collection-item">
-                    <span>Comments: {aquarium.comments}</span>
-                </li>
+                    {/* <span>By: {aquarium.by}</span> */}
+             
             </ul>
+            {/* <div className="padding-top">
+                <button className="waves-effect waves-light btn" onClick={()=>console.log("fish")}>Add Fish</button>
+            </div> */}
+            <span className="new badge" data-badge-caption={by}>By:</span>
+            <span className={`new badge ${color}`} data-badge-caption={water_type}></span>
+            </div>
         )
     }
     else{

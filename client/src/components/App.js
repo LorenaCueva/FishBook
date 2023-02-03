@@ -5,6 +5,7 @@ import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import AquariumContainer from './AquariumContainer';
 import NavBar from './NavBar';
+import FishContainer from './FishContainer';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
             <Route element={<NavBar user={user} onLogOut={handleLogOut}/>}>
               <Route path='/myAquariums' element={<AquariumContainer user={user} showAll={false}/>}></Route>
               <Route path='/aquariums' element={<AquariumContainer user={user} showAll={true}/>}></Route>
+              <Route path='/fish' element={<FishContainer/>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
