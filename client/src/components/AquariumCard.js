@@ -3,14 +3,15 @@ import { useState } from "react";
 import AquariumForm from "./AquariumForm";
 import { useNavigate } from "react-router-dom";
 
-function AquariumCard({aquarium, editable, onDelete, onEdit, onCardClick}){
+function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
 
-    const {id, name, galons, filter, heater, comments, by, water_type, image_url} = aquarium;
+    const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id} = aquarium;
 
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
-    const navigate = useNavigate();
+    // const [seeInfo, setSeeInfo] = useState(false);
 
+    const navigate = useNavigate();
 
     const color = aquarium.water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
@@ -48,9 +49,9 @@ function AquariumCard({aquarium, editable, onDelete, onEdit, onCardClick}){
         // }
 
         function handleCardClick(){
-            onCardClick(id)
+            // setSeeInfo((seeInfo)=>!seeInfo);
+            onCardClick(id, user_id);
         }
-
         const handleMouseEnter = () => {
             setIsHovering(true);
           };
@@ -58,20 +59,21 @@ function AquariumCard({aquarium, editable, onDelete, onEdit, onCardClick}){
           const handleMouseLeave = () => {
             setIsHovering(false);
           };
-        
+
     if(!isOnEdit){
         return(
             <div>
-            <ul className={`collection with-header left-align`} onClick={handleCardClick} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <ul className={`collection with-header left-align`} onMouseOver={handleMouseEnter} onMouseLeave={handleMouseLeave}>
                 <li className={`collection-header ${hoveringColor}`}>
                     <div className="secondary-content">
-                            {editable ?
                                 <div className="white-text">
-                                    <i className="padding-center small material-icons white-text" onClick={toggleEdit}>edit</i>
-                                    <i className="padding-center small material-icons white-text" onClick={handleDelete}>delete</i>
-                                    {/* <i className="padding-center small material-icons white-text" onClick={handleAddFish}>add_circle</i> */}
+                                {editable ?
+                                    <>
+                                        <i className="padding-center small material-icons white-text" onClick={toggleEdit}>edit</i>
+                                        <i className="padding-center small material-icons white-text" onClick={handleDelete}>delete</i>
+                                    </> : null}
+                                    <i className="padding-center small material-icons white-text" onClick={handleCardClick}>bubble_chart</i>
                                 </div>
-                            : null}
                         </div>
                     <h5 className={`${headerTextColor}-text`}>{name}</h5>
                 </li>

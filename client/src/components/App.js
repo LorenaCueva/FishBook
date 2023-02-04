@@ -43,6 +43,7 @@ function App() {
               <Route path='/myAquariums' element={<AquariumContainer user={user} showAll={false}/>}></Route>
               <Route path='/aquariums' element={<AquariumContainer user={user} showAll={true}/>}></Route>
               <Route path='/fish' element={<FishContainer/>}></Route>
+              <Route path='/addFish' element={<FishContainer addFish={true}/>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>

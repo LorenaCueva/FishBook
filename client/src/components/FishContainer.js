@@ -3,16 +3,21 @@ import FishCard from "./FishCard";
 import FishCardRow from "./FishCardRow";
 import { useNavigate } from "react-router-dom";
 
-function FishContainer({aquariumId = null}){
+function FishContainer({aquariumId = null, editable = false, addFish = false}){
 
     const [fishes, setFishes] = useState([]);
+    const [canAddFish, setCanAddFish] = useState(false);
+
+    // const navigate = useNavigate();
 
     useEffect(()=>{
         if(aquariumId){
             fetch(`/aquariums/${aquariumId}`)
             .then(r => r.json())
-            .then(aquarium => setFishes(aquarium.fish))
-            console.log(fishes)
+            .then(fishes => {
+                setFishes(fishes)}
+                )
+            .catch(error => console.log(error))
         }
         else{
         fetch("/fish")
@@ -22,7 +27,14 @@ function FishContainer({aquariumId = null}){
         }
     },[aquariumId])
 
-    const fishesToRender = fishes.map(fish => <FishCard key={fish.id}fish={fish}/>)
+    function handleDeleteFish(id){
+        const newFishes = fishes.filter(fish => fish.id !== id);
+        setFishes(newFishes);
+    }
+
+    const fishesToRender = fishes.map(fish => <FishCard key={fish.id}fish={fish} editable={editable} onDelete={handleDeleteFish} canAddFish={addFish}/>)
+
+    console.log("fishes", fishes)
 
     function setCards(arr){
         let aux = null;
@@ -39,12 +51,20 @@ function FishContainer({aquariumId = null}){
         return res
     }
 
+    function toggleAddFish(){
+        setCanAddFish((canAddFish) => !canAddFish);        
+    }
+console.log("canAdd", canAddFish)
 
     return (
+       
         <div>
-            <h5>Fish!</h5>
+            {/* {fishes.length != 0 ? <h5>Fish!</h5> :  <h5>No Fish!</h5>} */}
+            {canAddFish || editable ?  <div className="padding-top"><button className="btn waves-effect waves-light" onClick={toggleAddFish}><i className="material-icons left">add_box</i>Add Fish</button></div> : null}
+            {canAddFish ? <FishContainer addFish={true}/> : null}
             {setCards(fishesToRender)}
         </div>
-    )
+      )
 }
+
 export default FishContainer;

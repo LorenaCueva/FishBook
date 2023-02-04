@@ -4,4 +4,5 @@ class AquariumInfoSerializer < ActiveModel::Serializer
   def fish
     self.object.fish
   end
+
 end

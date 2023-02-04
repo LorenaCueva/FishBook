@@ -11,11 +11,11 @@ function AquariumContainer({user, showAll}){
    const [aquariums, setAquariums] = useState([]);
    const [showForm, setShowForm] = useState(false);
    const [showInfo, setShowInfo] = useState(false);
+   const [editable, setEditable] = useState(false);
    
    const navigate = useNavigate();
 
    let showAquariums = aquariums;
-//    setShowInfo(false);
 
     useEffect(() => {
         if(user == null){
@@ -25,7 +25,6 @@ function AquariumContainer({user, showAll}){
             fetch("/aquariums")
             .then(res => res.json())
             .then(aquariums => {
-                console.log("here")
                 setAquariums(aquariums)})
             .catch(error => console.log(error))
         }
@@ -38,52 +37,55 @@ function AquariumContainer({user, showAll}){
     },[navigate])
 
     function toggleShowForm(){
-        setShowForm((showForm)=>!showForm)
+        setShowForm((showForm)=>!showForm);
     }
 
     function handleAddAquarium(newAquarium){
-        setAquariums([newAquarium, ...aquariums])
+        setAquariums([newAquarium, ...aquariums]);
     }
 
     function handleDeleteAquarium(id){
-        const newAquariums = aquariums.filter(aquarium => aquarium.id !== id)
-        setAquariums(newAquariums)
+        const newAquariums = aquariums.filter(aquarium => aquarium.id !== id);
+        setShowInfo(false);
+        setAquariums(newAquariums);
     }
 
     function handleEditAquarium(edit){
-        const newAquariums = aquariums.map(aquarium => aquarium.id == edit.id ? edit : aquarium)
-        setAquariums(newAquariums)
+        const newAquariums = aquariums.map(aquarium => aquarium.id == edit.id ? edit : aquarium);
+        setAquariums(newAquariums);
     }
 
-    function handleCardClick(id){
-        showInfo == false ? setShowInfo(id) : setShowInfo(false)
+    function handleCardClick(id, cardOwnerId){
+        showInfo == false ? setShowInfo(id) : setShowInfo(false);
+        setEditable(user.id === cardOwnerId);
     }
+   
 
     if(showInfo){
-        showAquariums = aquariums.filter(aquarium => aquarium.id === showInfo)
+        showAquariums = aquariums.filter(aquarium => aquarium.id === showInfo);
     }
     else if(showAll){
-        showAquariums = aquariums.filter(aquarium => aquarium.user_id !== user.id)
+        showAquariums = aquariums.filter(aquarium => aquarium.user_id !== user.id);
     } 
     else{
-        showAquariums = aquariums.filter(aquarium => aquarium.user_id === user.id)
+        showAquariums = aquariums.filter(aquarium => aquarium.user_id === user.id);
     }
 
-    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} editable={user.id === aquarium.user_id} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick}></AquariumCard>)
+    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} editable={aquarium.user_id === user.id}></AquariumCard>);
 
     function setCards(arr){
         let aux = null;
         let res = [];
         if(arr.length > 2 && arr.length % 2 !== 0){
-            aux = arr.pop()
+            aux = arr.pop();
         }
         for(let i = 0; i < arr.length; i = i+2){
-            res.push(<AquariumCardRow key={i} card1={arr[i]} card2={arr[i+1]}/>)
+            res.push(<AquariumCardRow key={i} card1={arr[i]} card2={arr[i+1]}/>);
         }
         if(aux){
-            res.push(<div className="row" key={arr.length}><div className="col s6">{aux}</div></div>)
+            res.push(<div className="row" key={arr.length}><div className="col s6">{aux}</div></div>);
         }
-        return res
+        return res;
     }
   
 
@@ -91,7 +93,7 @@ function AquariumContainer({user, showAll}){
         return(
             <div>
                 <h4>Title</h4>
-                {showAll ? null : <div className="padding-top"><button className="btn waves-effect waves-light" onClick={toggleShowForm}><i className="material-icons left">add_box</i>Add Aquarium</button></div>}
+                {showInfo || showAll ? null : <div className="padding-top"><button className="btn waves-effect waves-light" onClick={toggleShowForm}><i className="material-icons left">add_box</i>Add Aquarium</button></div>}
                 {showForm ? 
                     <div className="row">
                         <div className="col s6 offset-s3">
@@ -99,7 +101,7 @@ function AquariumContainer({user, showAll}){
                         </div>
                     </div>: null}
                 {showInfo ? <div className="row"><div className="col s6 offset-s3">{aquariumsToRender}</div></div> : setCards(aquariumsToRender)}
-                {showInfo ? <FishContainer aquariumId={showInfo}/> : null}
+                {showInfo ? <FishContainer aquariumId={showInfo} editable={editable}/> : null}
 
             </div>
             
