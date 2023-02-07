@@ -6,6 +6,7 @@ export const easyColor = "green darken-1"
 export const moderateColor = "amber accent-3"
 export const hardColor = "deep-orange accent-3"
 export const hoverColor = "cyan darken-4"
+export const titleColor = "cyan darken-3"
 
 export function setLevelColor(level){
     switch (level){

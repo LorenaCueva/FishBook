@@ -48,8 +48,6 @@ function App() {
               <Route path='/myAquariums' element={<AquariumContainer user={user} showAll={false} allFish={allFish}/>}></Route>
               <Route path='/aquariums' element={<AquariumContainer user={user} showAll={true} />}></Route>
               <Route path='/fish' element={<FishContainer fishList={allFish}/>}></Route>
-              {/* <Route path='/myAquariums/:id' element={} */}
-              {/* <Route path='/addFish' element={<FishContainer addFish={true}/>}></Route> */}
             </Route>
           </Routes>
         </BrowserRouter>

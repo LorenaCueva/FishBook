@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import FishCard from "./FishCard";
 import FishCardRow from "./FishCardRow";
-// import { useNavigate } from "react-router-dom";
+import Title from "./Title";
 
 function FishContainer({fishList, editable = false, canAddFish = false, onAddFish = null, onEditFish=null, onDeleteFish = null}){
 
@@ -10,10 +10,6 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     useEffect(()=>{
         setFishes(fishList)
     },[fishList])
-
-    // console.log("fishes", fishes)
-    // console.log("fishes", fishList)
-    // console.log("editable", editable)
 
     const fishesToRender = fishes.map(fish => <FishCard key={fish.id}fish={fish} editable={editable} onDelete={onDeleteFish} canAddFish={canAddFish} onAddFish={onAddFish} onEdit={onEditFish}/>)
 
@@ -25,14 +21,27 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
         }
         return res
     }
-
-    return (
+    
+    if(!editable && !onAddFish){
+        return(
+            <div>
+                { fishes.length == 0 ? <Title title={"There are No Fish in this Aquarium!"}/> : <Title title={"Fish"}/>}
+                {setCards(fishesToRender)}
+            </div>
+        )
+    }
+    else{
+        return (
        
-        <div>
-            {fishes.length != 0 ? <h5>Fish!</h5> :  <h5>No Fish!</h5>}
-            {setCards(fishesToRender)}
-        </div>
-      )
+            <div>
+                {canAddFish ? <Title title={"Add Fishes"}/> :
+                    fishes.length == 0 ? <Title title={"You Have No Fish in this Aquarium!"}/> : <Title title={"Your Fish"}/>}
+                {setCards(fishesToRender)}
+            </div>
+          )
+    }
+
+    
 }
 
 export default FishContainer;

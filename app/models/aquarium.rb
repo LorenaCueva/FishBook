@@ -6,6 +6,6 @@ class Aquarium < ApplicationRecord
     validates :water_type, presence: true
     validates :water_type, inclusion: {in: ["Saltwater", "Freshwater"]}
     validates :galons, presence: true
-    validates :galons, numericality: { only_integer: true }
+    validates :galons, numericality: true
     validates :name, presence: true
 end

@@ -29,7 +29,7 @@ class HousingsController < ApplicationController
     end
 
     def housing_params
-        params.permit(:qty, :fish_id, :aquarium_id, :housing)
+        params.permit(:qty, :fish_id, :aquarium_id)
     end
 
     def auth

@@ -1,14 +1,20 @@
 import { freshWaterColor, saltwaterColor, headerTextColor, hoverColor} from "../Colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AquariumForm from "./AquariumForm";
 import { useNavigate } from "react-router-dom";
 
-function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
+function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty}){
 
-    const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id} = aquarium;
+
+    const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id, fish_qty} = aquarium;
 
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+    const [qty, setQty] = useState(Number(fish_qty));
+
+    useEffect(()=>{
+        setQty(qty+Number(addQty))
+    },[addQty])
     // const [seeInfo, setSeeInfo] = useState(false);
 
     const navigate = useNavigate();
@@ -16,6 +22,8 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
     const color = aquarium.water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
     let hoveringColor = isHovering? hoverColor : color;
+
+    // console.log(Number(fish_qty) + Number(addQty))
 
 
     ///change this
@@ -28,7 +36,8 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
             })
             .then(r => {
                 if(r.ok){
-                    onDelete(id)
+                    onDelete(id);
+                    // setQty(qty - fish_qty);
                 }
                 else{
                     r.json().then(error => console.log(error))
@@ -44,12 +53,7 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
             onEdit(edit)
         }
 
-        // function handleAddFish(){
-        //     console.log("fish")
-        // }
-
         function handleCardClick(){
-            // setSeeInfo((seeInfo)=>!seeInfo);
             onCardClick(id, user_id);
         }
         const handleMouseEnter = () => {
@@ -77,15 +81,9 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
                         </div>
                     <h5 className={`${headerTextColor}-text`}>{name}</h5>
                 </li>
-                {/* <li className="collection-item right-align">
-                    <span>By: {aquarium.by}</span>
-                </li> */}
                 <li className="center-align collection-item">
                     <img src={image}/>
                 </li>
-                {/* <li className="collection-item">
-                    <span>Type: {aquarium.water_type}</span>
-                </li> */}
                 <li className="collection-item">
                     <span>Galons: {galons}</span>
                 </li>
@@ -98,12 +96,11 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable}){
                 <li className="collection-item">
                     <span>Comments: {comments}</span>
                 </li>
-                    {/* <span>By: {aquarium.by}</span> */}
+                <li className="collection-item">
+                    <span>Total fish: {qty}</span>
+                </li>
              
             </ul>
-            {/* <div className="padding-top">
-                <button className="waves-effect waves-light btn" onClick={()=>console.log("fish")}>Add Fish</button>
-            </div> */}
             <span className="new badge" data-badge-caption={by}>By:</span>
             <span className={`new badge ${color}`} data-badge-caption={water_type}></span>
             </div>

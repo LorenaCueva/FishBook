@@ -18,7 +18,7 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
             method: "DELETE"})
             .then(r => {
                 if(r.ok){
-                   onDelete(fish.id)
+                   onDelete(fish.id, fishQty)
                 }
                 else{
                     r.json().then(error => console.log(error))
