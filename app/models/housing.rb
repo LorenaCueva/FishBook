@@ -1,10 +1,6 @@
 class Housing < ApplicationRecord
     belongs_to :fish
     belongs_to :aquarium
-    # validates :name, presence: true
-    # validate :has_valid_date
-
-    # def has_valid_date
-    #     return true
-    # end
+    validates :qty, presence: true
+    validates :qty, numericality: { only_integer: true, greater_than: 0 }
 end

@@ -1,5 +1,5 @@
 class HousingSerializer < ActiveModel::Serializer
-  attributes :name, :fish, :id
+  attributes :qty, :fish, :id
 
   def fish
     self.object.fish

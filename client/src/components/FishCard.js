@@ -2,13 +2,15 @@ import {headerTextColor} from "../Colors";
 import { setLevelColor, saltwaterColor, freshWaterColor } from "../Colors";
 import { useState } from "react";
 
-function FishCard({fish, editable, onDelete, canAddFish}){
+function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = false, onAddFish = null}){
 
-    // console.log("inFish", canAddFish)
+    const fishQty = fish.qty ? fish.qty : "";
+
+    // console.log(fish)
 
     const [edit, setEdit] = useState(false);
-    const [formData, setFormData] = useState(editable ? {name: fish.name} : null)
-    const {name, care_level, temperament, image_url, lifespan, size, diet, water_type, id} = editable ? fish.fish : fish;
+    const [formData, setFormData] = useState({qty: fishQty})
+    const {name, care_level, temperament, image_url, lifespan, size, diet, water_type, id} = fish.fish;
     const waterColor = water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
     function handleDeleteFish(){
@@ -22,7 +24,6 @@ function FishCard({fish, editable, onDelete, canAddFish}){
                     r.json().then(error => console.log(error))
                 }
             })
-        
     }
 
     function toggleEdit(){
@@ -45,10 +46,15 @@ function FishCard({fish, editable, onDelete, canAddFish}){
         .then(r => {
             if(r.ok){
                 r.json()
-                .then(edit => setFormData({name: edit.name}))
+                .then(edit => {
+                    setFormData({qty: edit.qty})
+                    onEdit(edit)})
             }
             else{
-                r.json().then(error => console.log(error))
+                r.json().then(error => 
+                    {console.log(error);
+                        setFormData({qty: fishQty});
+                    })
             }
         })
         toggleEdit();
@@ -56,8 +62,12 @@ function FishCard({fish, editable, onDelete, canAddFish}){
     }
 
     function handleAddFish(){
-        console.log(id)
+        const qty = window.prompt("Qty: ");
+        if(qty){
+            onAddFish(id, qty)
+        }
     }
+    
 
     return (
     <div>
@@ -76,17 +86,17 @@ function FishCard({fish, editable, onDelete, canAddFish}){
             <img src={"../fish.png"}/>
         </li>
         <li className={`${waterColor}collection-item center-align`}>
-            {editable ? 
-                edit  ? 
+        {editable ? 
+            edit  ? 
                     <form onSubmit={handleFormSubmit}>
-                        <input id="name" type="text" className={`${headerTextColor}-text center-align`} name="name" value={formData.name} onChange={handleFormChange}/>
-                        <span  className={`${headerTextColor}-text form-helper`}>Fish name</span>
-                    </form>: 
-            <span className={`${headerTextColor}-text`}>{formData.name}</span> : null}
+                        <input id="qty" type="text" className={`${headerTextColor}-text center-align`} name="qty" value={formData.qty} onChange={handleFormChange}/>
+                        <span  className={`${headerTextColor}-text form-helper`}>Qty </span>
+                    </form> :
+            canAddFish ? null : <span  className={`${headerTextColor}-text form-helper`}>Qty: {formData.qty} </span> : null}
 
         </li>
         <li className="collection-item">
-            <span>Size: {size} inches</span>
+            <span>Size: Up to {size} inches</span>
         </li>
         <li className="collection-item">
             <span>Care Level: {care_level}</span>
@@ -106,5 +116,5 @@ function FishCard({fish, editable, onDelete, canAddFish}){
         {/* {canAddFish ? <button className="waves-effect waves-light btn" onClick={()=>console.log("fish")}>Add Fish</button> : null} */}
     </div>
     )
-}
+ }
 export default FishCard;

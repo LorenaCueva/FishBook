@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_02_223422) do
+ActiveRecord::Schema.define(version: 2023_02_07_015426) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2023_02_02_223422) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "fish_id"
     t.integer "aquarium_id"
-    t.string "name"
+    t.integer "qty"
   end
 
   create_table "likes", force: :cascade do |t|

@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import AquariumCard from "./AquariumCard";
 import AquariumForm from "./AquariumForm";
 import AquariumCardRow from "./AquariumCardRow";
-import FishContainer from "./FishContainer";
+import AquariumInfo from "./AquariumInfo";
+// import FishContainer from "./FishContainer";
 
-function AquariumContainer({user, showAll}){
+function AquariumContainer({user, showAll, allFish}){
 
 
    const [aquariums, setAquariums] = useState([]);
@@ -35,6 +36,7 @@ function AquariumContainer({user, showAll}){
             setAquariums(aquariums)
             setShowInfo(false);
     },[navigate])
+
 
     function toggleShowForm(){
         setShowForm((showForm)=>!showForm);
@@ -74,20 +76,12 @@ function AquariumContainer({user, showAll}){
     let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} editable={aquarium.user_id === user.id}></AquariumCard>);
 
     function setCards(arr){
-        let aux = null;
         let res = [];
-        if(arr.length > 2 && arr.length % 2 !== 0){
-            aux = arr.pop();
-        }
         for(let i = 0; i < arr.length; i = i+2){
             res.push(<AquariumCardRow key={i} card1={arr[i]} card2={arr[i+1]}/>);
         }
-        if(aux){
-            res.push(<div className="row" key={arr.length}><div className="col s6">{aux}</div></div>);
-        }
         return res;
     }
-  
 
     if (user){
         return(
@@ -101,7 +95,8 @@ function AquariumContainer({user, showAll}){
                         </div>
                     </div>: null}
                 {showInfo ? <div className="row"><div className="col s6 offset-s3">{aquariumsToRender}</div></div> : setCards(aquariumsToRender)}
-                {showInfo ? <FishContainer aquariumId={showInfo} editable={editable}/> : null}
+                {/* {showInfo ? <FishContainer aquariumId={showInfo} editable={editable}/> : null} */}
+                {showInfo ? <AquariumInfo aquariumId={showInfo} editable={editable} allFish={allFish}/> : null}
 
             </div>
             

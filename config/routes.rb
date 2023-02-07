@@ -18,9 +18,11 @@ Rails.application.routes.draw do
   delete "/aquariums/:id", to: "aquaria#destroy"
   patch "/aquariums/:id", to: "aquaria#update"
 
+  post "/aquariums/:id/housings", to: "housings#create"
+
   delete "/housings/:id", to: "housings#destroy"
   patch "/housings/:id", to: "housings#update"
-  post "/housings", to: "housings#create"
+  # post "/housings", to: "housings#create"
   
 
 end
