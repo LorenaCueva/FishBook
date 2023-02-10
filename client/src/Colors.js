@@ -16,6 +16,8 @@ export function setLevelColor(level){
             return moderateColor
         case "Hard":
             return hardColor
+        default:
+            break;
     }
 }
 

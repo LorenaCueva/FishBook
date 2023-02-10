@@ -1,9 +1,8 @@
 import { freshWaterColor, saltwaterColor, headerTextColor, hoverColor} from "../Colors";
 import { useEffect, useState } from "react";
 import AquariumForm from "./AquariumForm";
-import { useNavigate } from "react-router-dom";
 
-function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty}){
+function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId}){
 
 
     const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id, fish_qty} = aquarium;
@@ -11,13 +10,15 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
     const [qty, setQty] = useState(Number(fish_qty));
+    const [liked, setLiked] = useState(aquarium.likes.includes(userId));
+    const [likes, setLikes] = useState(aquarium.likes.length)
+
+    const editable = userId === aquarium.user_id;
 
     useEffect(()=>{
-        setQty(qty+Number(addQty))
+        setQty(qty => qty+Number(addQty))
     },[addQty])
     // const [seeInfo, setSeeInfo] = useState(false);
-
-    const navigate = useNavigate();
 
     const color = aquarium.water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
@@ -27,7 +28,7 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty
 
 
     ///change this
-    let image = image_url == "" || null ? "../fish_bowl.png" : image_url;
+    let image = image_url === "" || null ? "../fish_bowl.png" : image_url;
 
 
         function handleDelete(){
@@ -56,11 +57,52 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty
         function handleCardClick(){
             onCardClick(id, user_id);
         }
+
+        function handleLikeClick(){
+            // liked ? setLiked(false) : setLiked(true)
+
+            if(liked) {
+                fetch(`/likes/aquariums/${id}`, {
+                    method: "DELETE"
+                })
+                .then(r => {
+                    if(r.ok){
+                        setLiked(false);
+                        setLikes(likes => likes - 1);
+                    }
+                    else{
+                        r.json().then(error => console.log(error))
+                }
+                })
+            }
+    
+            else{
+                fetch(`/likes/aquariums/${id}`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        aquarium_id: id
+                    })
+                })
+                    .then(r => {
+                        if(r.ok){
+                            setLiked(true);
+                            setLikes(likes => likes + 1);
+                        }
+                        else{
+                            r.json().then(error => console.log(error))
+                    }
+                    })
+                }
+        }
+
         const handleMouseEnter = () => {
             setIsHovering(true);
           };
         
-          const handleMouseLeave = () => {
+        const handleMouseLeave = () => {
             setIsHovering(false);
           };
 
@@ -82,7 +124,7 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty
                     <h5 className={`${headerTextColor}-text`}>{name}</h5>
                 </li>
                 <li className="center-align collection-item">
-                    <img src={image}/>
+                    <img src={image} alt={"aquarium img"}/>
                 </li>
                 <li className="collection-item">
                     <span>Galons: {galons}</span>
@@ -103,6 +145,8 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, editable, addQty
             </ul>
             <span className="new badge" data-badge-caption={by}>By:</span>
             <span className={`new badge ${color}`} data-badge-caption={water_type}></span>
+            {/* <span className="badge" data-badge-caption="❤️">{aquarium.likes.length}</span> */}
+            <span className="badge"><i className="padding small material-icons red-text" onClick={handleLikeClick}>{liked ? "favorite" : "favorite_border"}</i>{likes}</span>
             </div>
         )
     }

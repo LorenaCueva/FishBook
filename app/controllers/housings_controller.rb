@@ -1,25 +1,29 @@
 class HousingsController < ApplicationController
     before_action :find_housing, only:[:destroy, :update]
     before_action :auth, only:[:update, :destroy]
-    before_action :authorize, only:[:create]
+    # before_action :authorize, only:[:create]
 
     def destroy
-        # return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless @housing.aquarium.user_id == session[:user_id]
         @housing.destroy
         head :no_content
     end
 
     def update
-        # return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless @housing.aquarium.user_id == session[:user_id]
         @housing.update!(housing_params)
         render json: @housing, status: :created
     end
 
     def create
         return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless Aquarium.find(params[:id]).user_id == session[:user_id]
-        housing = Housing.create!(housing_params)
-        render json: housing, status: :created
-
+        housing = Housing.where("aquarium_id = ? AND fish_id = ?", params[:aquarium_id], params[:fish_id])
+        if housing == [] 
+            new = Housing.create!(housing_params)
+            render json: new, status: :created
+        else
+            total = housing[0].qty.to_i + params[:qty].to_i
+            housing[0].update(qty: total)
+            render json: housing[0], status: :created
+        end
     end
 
     private

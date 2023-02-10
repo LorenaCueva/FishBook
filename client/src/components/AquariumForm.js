@@ -98,11 +98,11 @@ function AquariumForm({showForm, onSubmitForm, editData = null}){
                         </li>
                         <li className="collection-item required form-helper">
                             <label> 
-                                <input name="water_type" type="radio" value="Freshwater" onChange={handleFormChange} checked={formData.water_type == "Freshwater"}/>
+                                <input name="water_type" type="radio" value="Freshwater" onChange={handleFormChange} checked={formData.water_type === "Freshwater"}/>
                                 <span className="form-helper">Freshwater</span>
                             </label>
                             <label>
-                                <input name="water_type" type="radio" value="Saltwater" onChange={handleFormChange} checked={formData.water_type == "Saltwater"}/>
+                                <input name="water_type" type="radio" value="Saltwater" onChange={handleFormChange} checked={formData.water_type === "Saltwater"}/>
                                 <span>Saltwater</span>
                             </label>
                             <div>

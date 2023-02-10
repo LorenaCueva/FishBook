@@ -1,6 +1,6 @@
 class Aquarium < ApplicationRecord
     belongs_to :user
-    # has_many :likes, :dependent => :destroy
+    has_many :likes, :dependent => :destroy
     has_many :housings, :dependent => :destroy
     has_many :fish, through: :housings
     validates :water_type, presence: true

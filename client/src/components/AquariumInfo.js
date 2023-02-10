@@ -28,11 +28,11 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
         })
         .then(r => r.json())
         .then(newFish => {
-            setFishes([newFish, ...fishes])
-            onAddFish(qty);
+            const fishList = fishes.filter(fish => fish.id !== newFish.id);
+            setFishes([newFish, ...fishList]);
+            onAddFish(newFish.qty);
         })
-        .catch(error => console.log(error))
-        console.log(fishes)
+        .catch(error => window.alert(error[0]))
     }
 
     function handleDeleteFish(id, qty){
@@ -42,17 +42,16 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
     }
 
     function handleEditFish(editFish){
-        let tot = 0
+        let total = 0
         const newFishes = fishes.map(fish => {
-            if (fish.id == editFish.id){
-                tot -= Number(fish.qty);
+            if (fish.id === editFish.id){
+                total -= Number(fish.qty);
                 return editFish
             }
             return fish})
         setFishes(newFishes);
-        onAddFish(tot + editFish.qty);
+        onAddFish(total + editFish.qty);
     }
-
 
     return(
         <div>

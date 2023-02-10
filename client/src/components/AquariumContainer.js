@@ -4,9 +4,9 @@ import AquariumCard from "./AquariumCard";
 import AquariumForm from "./AquariumForm";
 import AquariumCardRow from "./AquariumCardRow";
 import AquariumInfo from "./AquariumInfo";
-// import FishContainer from "./FishContainer";
+import Title from "./Title";
 
-function AquariumContainer({user, showAll, allFish}){
+function AquariumContainer({user, showAll = null, allFish = null, fishId = null}){
 
 
    const [aquariums, setAquariums] = useState([]);
@@ -19,24 +19,32 @@ function AquariumContainer({user, showAll, allFish}){
 
    let showAquariums = aquariums;
 
+
     useEffect(() => {
         if(user == null){
             navigate("/login")
         }
+        else if(fishId){
+            fetch(`/fish/${fishId}`)
+            .then(r => r.json())
+            .then(aquariums => {
+                setAquariums(aquariums)})
+        }
         else{
             fetch("/aquariums")
             .then(res => res.json())
-            .then(aquariums => {
-                console.log(aquariums)
-                setAquariums(aquariums)})
+            .then(aquariums => setAquariums(aquariums))
             .catch(error => console.log(error))
         }
+            
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[user])
+    },[])
+
 
     useEffect(() => {
             setAquariums(aquariums)
             setShowInfo(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[navigate])
 
 
@@ -55,12 +63,12 @@ function AquariumContainer({user, showAll, allFish}){
     }
 
     function handleEditAquarium(edit){
-        const newAquariums = aquariums.map(aquarium => aquarium.id == edit.id ? edit : aquarium);
+        const newAquariums = aquariums.map(aquarium => aquarium.id === edit.id ? edit : aquarium);
         setAquariums(newAquariums);
     }
 
     function handleCardClick(id, cardOwnerId){
-        showInfo == false ? setShowInfo(id) : setShowInfo(false);
+        showInfo === false ? setShowInfo(id) : setShowInfo(false);
         setEditable(user.id === cardOwnerId);
     }
    
@@ -68,14 +76,17 @@ function AquariumContainer({user, showAll, allFish}){
     if(showInfo){
         showAquariums = aquariums.filter(aquarium => aquarium.id === showInfo);
     }
+    else if(fishId){
+        showAquariums = aquariums;
+    } 
     else if(showAll){
         showAquariums = aquariums.filter(aquarium => aquarium.user_id !== user.id);
-    } 
+    }
     else{
         showAquariums = aquariums.filter(aquarium => aquarium.user_id === user.id);
     }
 
-    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} editable={aquarium.user_id === user.id } addQty={addToCard}></AquariumCard>);
+    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} addQty={addToCard} userId={user.id}></AquariumCard>);
 
     function setCards(arr){
         let res = [];
@@ -93,7 +104,7 @@ function AquariumContainer({user, showAll, allFish}){
     if (user){
         return(
             <div>
-                <h4>Title</h4>
+                <Title title={showAll ? "Community Aquariums" : "My Aquariums"}/>
                 {showInfo || showAll ? null : <div className="padding-top"><button className="btn waves-effect waves-light" onClick={toggleShowForm}><i className="material-icons left">add_box</i>Add Aquarium</button></div>}
                 {showForm ? 
                     <div className="row">
@@ -102,7 +113,6 @@ function AquariumContainer({user, showAll, allFish}){
                         </div>
                     </div>: null}
                 {showInfo ? <div className="row"><div className="col s6 offset-s3">{aquariumsToRender}</div></div> : setCards(aquariumsToRender)}
-                {/* {showInfo ? <FishContainer aquariumId={showInfo} editable={editable}/> : null} */}
                 {showInfo ? <AquariumInfo aquariumId={showInfo} editable={editable} allFish={allFish} onAddFish={handleAddFishToCard}/> : null}
 
             </div>

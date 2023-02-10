@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Title from "./Title";
 
-function LogIn({user = null, setUser}){
+
+function LogIn({user = null, setUser, onLogIn}){
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -12,10 +14,13 @@ function LogIn({user = null, setUser}){
 
     let displayErrors = null;
 
+
     useEffect(()=> {
         if (user){
-            navigate('/myAquariums');
-        }
+                // navigate('/myAquariums');
+                // onLogIn();
+                navigate('/myAquariums');
+            }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[user])
 
@@ -83,6 +88,8 @@ function LogIn({user = null, setUser}){
     }
 
     return(
+    <div>
+        <Title title={"fishbook"}/>
         <div className="row">
             <div className="card-panel grey lighten-4">
                 <form className="col s6 offset-s3">
@@ -112,6 +119,7 @@ function LogIn({user = null, setUser}){
                  </div>
             </div>
         </div>
+    </div>
     );
 }
 

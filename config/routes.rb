@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   # Routing logic: fallback requests for React Router.
   # Leave this here to help deploy your app later!
   resources :users, only: [:create]
-  resources :fish, only: [:index]
+  resources :fish, only: [:index, :show]
 
 
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
@@ -20,9 +20,12 @@ Rails.application.routes.draw do
 
   post "/aquariums/:id/housings", to: "housings#create"
 
+  post "/likes/aquariums/:aquarium_id", to: "likes#create"
+  delete "/likes/aquariums/:aquarium_id", to: "likes#destroy"
+
   delete "/housings/:id", to: "housings#destroy"
   patch "/housings/:id", to: "housings#update"
-  # post "/housings", to: "housings#create"
+  post "/housings", to: "housings#create"
   
 
 end
