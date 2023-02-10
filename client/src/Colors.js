@@ -12,7 +12,7 @@ export function setLevelColor(level){
     switch (level){
         case "Easy" : 
             return easyColor
-        case "Moderate":
+        case "Medium":
             return moderateColor
         case "Hard":
             return hardColor

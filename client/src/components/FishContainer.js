@@ -9,6 +9,8 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     const [fishes, setFishes] = useState([]);
     const [search, setSearch] = useState("");
     const [seeOnly, setSeeOnly] = useState(false);
+    const [sort, setSort] = useState("");
+
 
     useEffect(()=>{
         setFishes(fishList)
@@ -23,10 +25,16 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
         onSeeFish(id)
     }
 
+    function handleSort(type){
+        setSort(type)
+    }
 
-    const searchFishes = fishes.filter(fish => fish.fish.name.toLowerCase().includes(search.toLowerCase()))
 
-    let sortedFishes = seeOnly ? fishes.filter(fish => fish.fish.id === seeOnly) : searchFishes
+    let sortedFishes = sort ? fishes.filter(fish => fish.fish.water_type === sort) : fishes
+
+    const searchFishes = sortedFishes.filter(fish => fish.fish.name.toLowerCase().includes(search.toLowerCase()))
+
+    sortedFishes = seeOnly ? fishes.filter(fish => fish.fish.id === seeOnly) : searchFishes
 
     const fishesToRender = sortedFishes.map(fish => <FishCard key={fish.id}fish={fish} editable={editable} onDelete={onDeleteFish} canAddFish={canAddFish} onAddFish={onAddFish} onEdit={onEditFish} allFish={allFish} seeFish={handleSeeFish}/>)
 
@@ -54,7 +62,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
                 { fishes.length === 0 ? <Title title={"There are No Fish in this Aquarium!"}/> : 
                     <div>
                         <Title title={"Fish"}/>
-                        <Search onSearch={handleSearch}/>
+                        <Search onSearch={handleSearch} onSort={handleSort}/>
                     </div>}
                 {setCards(fishesToRender)}
             </div>
@@ -68,13 +76,13 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
                 {canAddFish ? 
                     <div>
                         <Title title={"Add Fishes"}/>
-                        <Search onSearch={handleSearch}/>
+                        <Search onSearch={handleSearch} onSort={handleSort}/>
                     </div>
                      :
                     fishes.length === 0 ? <Title title={"You Have No Fish in this Aquarium!"}/> :
                     <div>
                         <Title title={"Your Fish"}/>
-                        <Search onSearch={handleSearch}/>
+                        <Search onSearch={handleSearch} onSort={handleSort}/>
                     </div>}
                 {setCards(fishesToRender)}
             </div>
