@@ -3,15 +3,22 @@ import AquariumContainer from "./AquariumContainer";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-function AllFish({fishList, allFish, user}){
+function AllFish({seeAllFish, user}){
 
     const [seeAquariums, setSeeAquariums] = useState(null);
+    const [fishes, setFishes] = useState([]);
 
     const navigate = useNavigate();
 
     useEffect(()=>{
         if(!user){
             navigate('/login')
+        }
+        else{
+            fetch('/fish')
+            .then(r => r.json())
+            .then(fishes => setFishes(fishes))
+            .catch(error => console.log(error))
         }
     },[navigate, user])
 
@@ -21,7 +28,7 @@ function AllFish({fishList, allFish, user}){
 
     return(
         <div>
-            <FishContainer fishList={fishList} allFish={allFish} onSeeFish={handleOnSeeFish}/>
+            <FishContainer fishList={fishes} seeAllFish={seeAllFish} onSeeFish={handleOnSeeFish}/>
             {seeAquariums ? <AquariumContainer user={user} showAll={true} fishId={seeAquariums}/> : null}
         </div>
     );

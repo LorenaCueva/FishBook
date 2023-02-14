@@ -4,7 +4,7 @@ import FishCardRow from "./FishCardRow";
 import Title from "./Title";
 import Search from "./Search";
 
-function FishContainer({fishList, editable = false, canAddFish = false, onAddFish = null, onEditFish=null, onDeleteFish = null, allFish, onSeeFish= null}){
+function FishContainer({fishList, editable = false, canAddFish = false, onAddFish = null, onEditFish=null, onDeleteFish = null, seeAllFish, onSeeFish= null}){
 
     const [fishes, setFishes] = useState([]);
     const [search, setSearch] = useState("");
@@ -36,7 +36,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
 
     sortedFishes = seeOnly ? fishes.filter(fish => fish.fish.id === seeOnly) : searchFishes
 
-    const fishesToRender = sortedFishes.map(fish => <FishCard key={fish.id}fish={fish} editable={editable} onDelete={onDeleteFish} canAddFish={canAddFish} onAddFish={onAddFish} onEdit={onEditFish} allFish={allFish} seeFish={handleSeeFish}/>)
+    const fishesToRender = sortedFishes.map(fish => <FishCard key={fish.id}fish={fish} editable={editable} onDelete={onDeleteFish} canAddFish={canAddFish} onAddFish={onAddFish} onEdit={onEditFish} seeAllFish={seeAllFish} seeFish={handleSeeFish}/>)
 
     
     function setCards(arr){
@@ -62,7 +62,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
                 { fishes.length === 0 ? <Title title={"There are No Fish in this Aquarium!"}/> : 
                     <div>
                         <Title title={"Fish"}/>
-                        <Search onSearch={handleSearch} onSort={handleSort}/>
+                        {seeAllFish ? <Search onSearch={handleSearch} onSort={handleSort}/> : <Search onSearch={handleSearch}/>}
                     </div>}
                 {setCards(fishesToRender)}
             </div>

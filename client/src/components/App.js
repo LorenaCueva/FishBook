@@ -38,8 +38,7 @@ function App() {
     });
   }
     return (
-      <div className="App container">
-        <h5></h5>
+      <div className="App container padding-top">
         <BrowserRouter>
           <Routes>
             <Route index element={<LogIn user={user} setUser={setUser} />}></Route>
@@ -48,7 +47,7 @@ function App() {
             <Route element={<NavBar user={user} onLogOut={handleLogOut}/>}>
               <Route path='/myAquariums' element={<AquariumContainer user={user} showAll={false} allFish={allFish} />}></Route>
               <Route path='/aquariums' element={<AquariumContainer user={user} showAll={true}/>}></Route>
-              <Route path='/fish' element={<AllFish user={user} fishList={allFish} allFish={true}/>}></Route>
+              <Route path='/fish' element={<AllFish user={user} seeAllFish={true}/>}></Route>
             </Route>
           </Routes>
         </BrowserRouter>

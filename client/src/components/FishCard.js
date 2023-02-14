@@ -2,12 +2,9 @@ import {headerTextColor} from "../Colors";
 import { setLevelColor, saltwaterColor, freshWaterColor } from "../Colors";
 import { useEffect, useState } from "react";
 
-function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = false, onAddFish = null, allFish = null, seeFish}){
+function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = false, onAddFish = null, seeAllFish = null, seeFish}){
 
     const fishQty = fish.qty ? fish.qty : "";
-
-    const totalAquariums = fish.total_aquariums >= 0 ? true : false
-
 
     let displayErrors = [];
 
@@ -92,7 +89,7 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
                                 <i className="padding-center small material-icons white-text" onClick={handleDeleteFish}>delete</i>
                             </div> : null}
                 {canAddFish ? <i className="padding-center small material-icons white-text" onClick={handleAddFish}>add_circle</i> : null}
-                {allFish ? <i className="padding-center small material-icons white-text" onClick={()=>seeFish(id)}>remove_red_eye</i> : null}
+                {seeAllFish ? <i className="padding-center small material-icons white-text" onClick={()=>seeFish(id)}>remove_red_eye</i> : null}
             </div>
             <h5 className={`${headerTextColor}-text`}>{name}</h5>
         </li>
@@ -124,7 +121,7 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
         <li className="collection-item">
             <span>Diet: {diet}</span>
         </li>
-        {totalAquariums ? <li className="collection-item">
+        {seeAllFish ? <li className="collection-item">
             <span>Found in: {fish.total_aquariums} community aquariums</span>
         </li>: null}
         {errors ? <li className="collection-item center-align">{displayErrors}</li> : null}
