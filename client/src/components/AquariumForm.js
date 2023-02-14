@@ -27,7 +27,7 @@ function AquariumForm({showForm, onSubmitForm, editData = null}){
             name: editData.name,
             galons: editData.galons,
             filter: editData.filter,
-            heater: editData.filter,
+            heater: editData.heater,
             comments: editData.comments,
             water_type: editData.water_type
         }

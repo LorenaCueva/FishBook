@@ -43,11 +43,18 @@ Run the application
 
 ## For users:
 
+- Start your fishbook at:
+https://fishbook-hnym.onrender.com
+
 ## Using
 
 - Materialize framework:
 https://materializecss.com/
 
 - Temporary fish and aquarium images grabbed from the internet (used for learning purposes)
+
+- Fish Information from:
+https://www.fishlore.com/
+https://www.fishkeepingworld.com/
 
 
