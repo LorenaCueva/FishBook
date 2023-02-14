@@ -28,6 +28,7 @@ Start building
   - bundle install
 - Build the database with:
   - rails db:create
+  - rails db:migrate
 - Seed the database with:
   - rails db:seed
 - npm install --prefix client
