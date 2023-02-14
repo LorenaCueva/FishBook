@@ -7,7 +7,7 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
     const [addFish, setAddFish] = useState(false);
     const [errors, setErrors] = useState(null);
 
-    let displayErrors = null;
+    let displayErrors = null; 
 
 
     useEffect(()=>{
@@ -69,7 +69,6 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
 
     if (errors){
         displayErrors = errors.map((e, index) => <p className="error" key={index}>{e}</p>)
-        console.log(displayErrors)
      }
 
     return(

@@ -8,7 +8,7 @@ For Aquarium jobyists!
 
 Fishbook allows you to keep track of your aquariums, and their fish.
 Create and login to a secure account. 
-Add aquariums to your account and fish to your aquariums. 
+Add aquariums to your account and fish to your aquariums. (For the MVP add fish from a preset list)
 Look at fish cards to remember how to best keep your fish happy!
 Add Comments to your aquariums so others can learn about your vision.
 Wondering how others keep their pets? Look into community aquariums to see and like their aquascape creations.

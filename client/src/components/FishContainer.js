@@ -76,7 +76,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
                 {canAddFish ? 
                     <div>
                         <Title title={"Add Fishes"}/>
-                        <Search onSearch={handleSearch}/>
+                        <Search onSearch={handleSearch} onSort={handleSort}/>
                     </div>
                      :
                     fishes.length === 0 ? <Title title={"You Have No Fish in this Aquarium!"}/> :
