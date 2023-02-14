@@ -25,7 +25,8 @@ Rails.application.routes.draw do
 
   delete "/housings/:id", to: "housings#destroy"
   patch "/housings/:id", to: "housings#update"
-  post "/housings", to: "housings#create"
+
+  # post "/housings", to: "housings#create"
   
 
 end

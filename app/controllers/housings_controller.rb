@@ -23,7 +23,7 @@ class HousingsController < ApplicationController
             total = housing[0].qty.to_i + params[:qty].to_i
             housing[0].update(qty: total)
             render json: housing[0], status: :created
-        end
+        end 
     end
 
     private

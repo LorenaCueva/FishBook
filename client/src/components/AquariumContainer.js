@@ -13,7 +13,6 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
    const [showForm, setShowForm] = useState(false);
    const [showInfo, setShowInfo] = useState(false);
    const [editable, setEditable] = useState(false);
-   const [addToCard, setAddToCard] = useState(0);
    
    const navigate = useNavigate();
 
@@ -86,7 +85,7 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
         showAquariums = aquariums.filter(aquarium => aquarium.user_id === user.id);
     }
 
-    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} addQty={addToCard} userId={user.id}></AquariumCard>);
+    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} userId={user.id}></AquariumCard>);
 
     function setCards(arr){
         let res = [];
@@ -96,8 +95,11 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
         return res;
     }
 
-    function handleAddFishToCard(qty){
-        setAddToCard(qty);
+    function handleAddFishToCard(qty, aquariumId){
+        const aq = aquariums.filter(aquarium => aquarium.id === aquariumId)
+        aq[0].fish_qty = Number(aq[0].fish_qty) + Number(qty)
+        const newAquariums = aquariums.map(aquarium => aquarium.id === aquariumId ? aq[0] : aquarium)
+        setAquariums(newAquariums)
     }
   
 

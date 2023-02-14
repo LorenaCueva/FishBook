@@ -1,18 +1,25 @@
 import {headerTextColor} from "../Colors";
 import { setLevelColor, saltwaterColor, freshWaterColor } from "../Colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = false, onAddFish = null, allFish = null, seeFish}){
 
-
     const fishQty = fish.qty ? fish.qty : "";
+
+    const totalAquariums = fish.total_aquariums >= 0 ? true : false
+
+
     let displayErrors = [];
 
     const [edit, setEdit] = useState(false);
-    const [formData, setFormData] = useState({qty: fishQty})
+    const [formData, setFormData] = useState("")
     const {name, care_level, temperament, lifespan, size, diet, water_type, id} = fish.fish;
     const [errors, setErrors] = useState([]);
     const waterColor = water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
+
+    useEffect(()=>{
+        setFormData({qty: fishQty})
+    },[fishQty])
 
     function handleDeleteFish(){
         fetch(`/housings/${fish.id}`,{
@@ -117,9 +124,9 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
         <li className="collection-item">
             <span>Diet: {diet}</span>
         </li>
-        <li className="collection-item">
-            <span>Found in: {fish.total_aquariums} community aquarium{fish.total_aquariums > 1 ? "s" : ""}</span>
-        </li>
+        {totalAquariums ? <li className="collection-item">
+            <span>Found in: {fish.total_aquariums} community aquariums</span>
+        </li>: null}
         {errors ? <li className="collection-item center-align">{displayErrors}</li> : null}
     </ul>
         <span className={`new badge ${setLevelColor(waterColor)}`} data-badge-caption={water_type}></span>

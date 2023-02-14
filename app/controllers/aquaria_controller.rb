@@ -1,6 +1,6 @@
 class AquariaController < ApplicationController
     before_action :find_aquarium, only:[:destroy, :update, :show]
-    before_action :authorize, only:[:index]
+    before_action :authorize, only:[:index, :show]
     before_action :auth, only: [:destroy, :update]
 
     
@@ -12,17 +12,14 @@ class AquariaController < ApplicationController
     def show
         fishes = @aquarium.housings
         render json: fishes, status: :ok
-
     end
 
     def update
-        # return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless @aquarium.user_id == session[:user_id]
         @aquarium.update!(aquarium_params) 
         render json: @aquarium, status: :created
     end
 
     def destroy
-        # return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless @aquarium.user_id == session[:user_id]
         @aquarium.destroy
         head :no_content
     end

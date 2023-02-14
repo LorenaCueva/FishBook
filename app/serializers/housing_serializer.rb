@@ -4,4 +4,5 @@ class HousingSerializer < ActiveModel::Serializer
   def fish
     self.object.fish
   end
+
 end

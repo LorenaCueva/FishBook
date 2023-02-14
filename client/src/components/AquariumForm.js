@@ -4,6 +4,7 @@ import { useState } from "react";
 function AquariumForm({showForm, onSubmitForm, editData = null}){
 
     const isEditForm = editData ? true : false;
+    let canEditWaterType = true;
 
     const clearFormData = { 
         image_url: "",
@@ -18,6 +19,9 @@ function AquariumForm({showForm, onSubmitForm, editData = null}){
     let fillData = {};
 
     if(editData){
+
+       canEditWaterType = editData.fish_qty > 0 ? false : true;
+
         fillData = {
             image_url: editData.image_url,
             name: editData.name,
@@ -96,7 +100,7 @@ function AquariumForm({showForm, onSubmitForm, editData = null}){
                                 <input id="heater" type="text" className="validate" name="heater" value={formData.heater} onChange={handleFormChange}/>
                                 <span className="form-helper">Heater</span>
                         </li>
-                        <li className="collection-item required form-helper">
+                        {canEditWaterType ? <li className="collection-item required form-helper">
                             <label> 
                                 <input name="water_type" type="radio" value="Freshwater" onChange={handleFormChange} checked={formData.water_type === "Freshwater"}/>
                                 <span className="form-helper">Freshwater</span>
@@ -108,7 +112,8 @@ function AquariumForm({showForm, onSubmitForm, editData = null}){
                             <div>
                                 <span className="required form-helper">* Water Type</span>
                             </div>
-                        </li>
+                        </li> : null}
+                        
                         <li className="collection-item">
                                 <textarea id="comments" name="comments" className="materialize-textarea" value={formData.comments} onChange={handleFormChange}></textarea>
                                 <span className="form-helper">Comments</span>

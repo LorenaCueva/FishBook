@@ -5,7 +5,6 @@ class Fish < ApplicationRecord
     validates :care_level, presence: true
     validates :care_level, inclusion: {in: ["Easy", "Medium", "Hard"]}
     validates :temperament, presence: true
-    # validates :image_url, presence: true
     validates :lifespan, presence: true
     validates :size, presence: true
     validates :size, numericality: true

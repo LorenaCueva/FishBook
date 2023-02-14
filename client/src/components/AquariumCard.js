@@ -1,5 +1,5 @@
 import { freshWaterColor, saltwaterColor, headerTextColor, hoverColor} from "../Colors";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AquariumForm from "./AquariumForm";
 
 function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId}){
@@ -7,24 +7,18 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
 
     const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id, fish_qty} = aquarium;
 
+    // console.log("aquarium", aquarium)
+
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
-    const [qty, setQty] = useState(Number(fish_qty));
     const [liked, setLiked] = useState(aquarium.likes.includes(userId));
     const [likes, setLikes] = useState(aquarium.likes.length)
 
     const editable = userId === aquarium.user_id;
 
-    useEffect(()=>{
-        setQty(qty => qty+Number(addQty))
-    },[addQty])
-    // const [seeInfo, setSeeInfo] = useState(false);
-
     const color = aquarium.water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
     let hoveringColor = isHovering? hoverColor : color;
-
-    // console.log(Number(fish_qty) + Number(addQty))
 
 
     ///change this
@@ -38,7 +32,6 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
             .then(r => {
                 if(r.ok){
                     onDelete(id);
-                    // setQty(qty - fish_qty);
                 }
                 else{
                     r.json().then(error => console.log(error))
@@ -59,8 +52,6 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
         }
 
         function handleLikeClick(){
-            // liked ? setLiked(false) : setLiked(true)
-
             if(liked) {
                 fetch(`/likes/aquariums/${id}`, {
                     method: "DELETE"
@@ -139,13 +130,12 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
                     <span>Comments: {comments}</span>
                 </li>
                 <li className="collection-item">
-                    <span>Total fish: {qty}</span>
+                    <span>Total fish: {fish_qty}</span>
                 </li>
              
             </ul>
             <span className="new badge" data-badge-caption={by}>By:</span>
             <span className={`new badge ${color}`} data-badge-caption={water_type}></span>
-            {/* <span className="badge" data-badge-caption="❤️">{aquarium.likes.length}</span> */}
             <span className="badge"><i className="padding small material-icons red-text" onClick={handleLikeClick}>{liked ? "favorite" : "favorite_border"}</i>{likes}</span>
             </div>
         )

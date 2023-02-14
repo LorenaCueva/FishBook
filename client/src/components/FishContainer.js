@@ -11,7 +11,6 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     const [seeOnly, setSeeOnly] = useState(false);
     const [sort, setSort] = useState("");
 
-
     useEffect(()=>{
         setFishes(fishList)
     },[fishList])
@@ -22,6 +21,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
 
     function handleSeeFish(id){
         seeOnly === id ? setSeeOnly(false) : setSeeOnly(id)
+        setSort("")
         onSeeFish(id)
     }
 
@@ -82,7 +82,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
                     fishes.length === 0 ? <Title title={"You Have No Fish in this Aquarium!"}/> :
                     <div>
                         <Title title={"Your Fish"}/>
-                        <Search onSearch={handleSearch} onSort={handleSort}/>
+                        <Search onSearch={handleSearch}/>
                     </div>}
                 {setCards(fishesToRender)}
             </div>

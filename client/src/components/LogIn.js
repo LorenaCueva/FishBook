@@ -17,8 +17,6 @@ function LogIn({user = null, setUser, onLogIn}){
 
     useEffect(()=> {
         if (user){
-                // navigate('/myAquariums');
-                // onLogIn();
                 navigate('/myAquariums');
             }
         // eslint-disable-next-line react-hooks/exhaustive-deps
