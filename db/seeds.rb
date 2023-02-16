@@ -21,3 +21,5 @@ Fish.create!(name: "Flame Angelfish", care_level: "Medium", temperament: "May be
 Fish.create!(name: "Peach Fairy Basslet", care_level: "Hard", temperament: "Can get aggressive with other anthias.", lifespan: "5 years", size: 4, diet: "Omnivorous. Try to give them a variety of marine foods.", water_type: "Saltwater")
 Fish.create!(name: "Bubble Tip Anemone", care_level: "Hard", temperament: "Peaceful", lifespan: "Very long", size: 12, diet: "Supplemental feedings (twice per week)", water_type: "Saltwater")
 Fish.create!(name: "Green Mandarin Fish", care_level: "Hard", temperament: "Peaceful", lifespan: "Several years", size: 2, diet: "foods like smaller pellets and thawed mysis shrimp, brine shrimp, etc.", water_type: "Saltwater")
+
+

@@ -27,6 +27,10 @@ function Search({onSearch, onSort=null}){
                                 <input name="water_type" type="radio" value="Saltwater" onChange={handleSort} />
                                 <span>Saltwater</span>
                             </label>
+                            <label>
+                                <input name="water_type" type="radio" value="All" onChange={handleSort} defaultChecked={true}/>
+                                <span>All</span>
+                            </label>
                             <div>
                                 <span className="form-helper">Sort by Water Type</span>
                             </div>

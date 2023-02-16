@@ -4,12 +4,14 @@ class LikesController < ApplicationController
 
     def create
         @user.likes.create!(like_params)
-        head :no_content, status: :ok
+        aquarium = Aquarium.find(params[:aquarium_id])
+        render json: aquarium, status: :ok
     end
 
     def destroy
         @user.likes.find_by_aquarium_id(params[:aquarium_id]).destroy
-        head :no_content, status: :ok
+        aquarium = Aquarium.find(params[:aquarium_id])
+        render json: aquarium, status: :ok
     end
 
     def like_params

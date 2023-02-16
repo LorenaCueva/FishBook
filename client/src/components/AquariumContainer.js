@@ -62,16 +62,20 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
     }
 
     function handleEditAquarium(edit){
-        const newAquariums = aquariums.map(aquarium => aquarium.id === edit.id ? edit : aquarium);
-        setAquariums(newAquariums);
+        const newAquariums = aquariums.map(aquarium => aquarium.id === edit.id ? edit : aquarium)
+        setAquariums(newAquariums)
     }
 
     function handleCardClick(id, cardOwnerId){
-        showInfo === false ? setShowInfo(id) : setShowInfo(false);
+        showInfo === false ? setShowInfo(id) : setShowInfo(false)
         setEditable(user.id === cardOwnerId);
     }
-   
 
+    function handleLikeAquarium(aquarium){
+        const newAquariums = aquariums.map(aq => aq.id === aquarium.id ? aquarium : aq )
+        setAquariums(newAquariums)
+    }
+   
     if(showInfo){
         showAquariums = aquariums.filter(aquarium => aquarium.id === showInfo);
     }
@@ -85,7 +89,7 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
         showAquariums = aquariums.filter(aquarium => aquarium.user_id === user.id);
     }
 
-    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} userId={user.id}></AquariumCard>);
+    let aquariumsToRender = showAquariums.map(aquarium => <AquariumCard key={aquarium.id} aquarium={aquarium} onDelete={handleDeleteAquarium} onEdit={handleEditAquarium} onCardClick={handleCardClick} userId={user.id} onLike={handleLikeAquarium}></AquariumCard>);
 
     function setCards(arr){
         let res = [];

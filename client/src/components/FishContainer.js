@@ -9,7 +9,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     const [fishes, setFishes] = useState([]);
     const [search, setSearch] = useState("");
     const [seeOnly, setSeeOnly] = useState(false);
-    const [sort, setSort] = useState("");
+    const [sort, setSort] = useState("All");
 
     useEffect(()=>{
         setFishes(fishList)
@@ -21,7 +21,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
 
     function handleSeeFish(id){
         seeOnly === id ? setSeeOnly(false) : setSeeOnly(id)
-        setSort("")
+        setSort("All")
         onSeeFish(id)
     }
 
@@ -30,7 +30,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     }
 
 
-    let sortedFishes = sort ? fishes.filter(fish => fish.fish.water_type === sort) : fishes
+    let sortedFishes = sort === "All" ? fishes : fishes.filter(fish => fish.fish.water_type === sort)
 
     const searchFishes = sortedFishes.filter(fish => fish.fish.name.toLowerCase().includes(search.toLowerCase()))
 

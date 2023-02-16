@@ -2,12 +2,11 @@ import { freshWaterColor, saltwaterColor, headerTextColor, hoverColor} from "../
 import { useState } from "react";
 import AquariumForm from "./AquariumForm";
 
-function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId}){
+function AquariumCard({aquarium, onDelete, onEdit, onCardClick, userId, onLike}){
 
 
     const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id, fish_qty} = aquarium;
 
-    // console.log("aquarium", aquarium)
 
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
@@ -21,7 +20,6 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
     let hoveringColor = isHovering? hoverColor : color;
 
 
-    ///change this
     let image = image_url === "" || null ? "../fish_bowl.png" : image_url;
 
 
@@ -58,8 +56,9 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
                 })
                 .then(r => {
                     if(r.ok){
-                        setLiked(false);
-                        setLikes(likes => likes - 1);
+                        r.json().then(aq => onLike(aq))
+                        setLiked(false)
+                        setLikes(likes => likes-1)
                     }
                     else{
                         r.json().then(error => console.log(error))
@@ -79,8 +78,9 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, addQty, userId})
                 })
                     .then(r => {
                         if(r.ok){
-                            setLiked(true);
-                            setLikes(likes => likes + 1);
+                            r.json().then(aq => onLike(aq))
+                            setLiked(true)
+                            setLikes(likes => likes+1)
                         }
                         else{
                             r.json().then(error => console.log(error))
