@@ -44,6 +44,7 @@ function LogIn({user = null, setUser, onLogIn}){
         .then(res => {
             if(res.ok){
                 res.json().then(user => {
+                    // onLogIn();
                     setUser(user);
                     navigate("/myAquariums")
                 })
@@ -67,6 +68,7 @@ function LogIn({user = null, setUser, onLogIn}){
         .then(res => {
             if(res.ok){
                 res.json().then(user => {
+                    // onLogIn();
                     setUser(user);
                     navigate('/myAquariums')
                 })

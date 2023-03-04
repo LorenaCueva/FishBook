@@ -6,15 +6,17 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
     const [fishes, setFishes] = useState([]);
     const [addFish, setAddFish] = useState(false);
     const [errors, setErrors] = useState(null);
+    const [waterType, setWaterType] = useState("");
 
     let displayErrors = null; 
 
-
     useEffect(()=>{
-        fetch(`/aquariums/${aquariumId}`)
+        fetch(`/aquariums/${aquariumId}/fish`)
         .then(r => r.json())
-        .then(fishes => {
-            setFishes(fishes)}
+        .then(aquarium => {
+            setWaterType(aquarium.water_type)
+            setFishes(aquarium.housings)
+        }
         )
         .catch(error => console.log(error))
     },[aquariumId])
@@ -33,10 +35,10 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
         .then(r => {
             if(r.ok){
                 r.json()
-                .then(newFish => {
-                    const fishList = fishes.filter(fish => fish.id !== newFish.id);
-                    setFishes([newFish, ...fishList]);
-                    onAddFish(qty, aquariumId);
+                .then(housing => {
+                    const fishList = fishes.filter(fish => fish.id !== housing.id);
+                    setFishes([housing, ...fishList]);
+                    onAddFish(housing.aquarium);
                 })
             }
             else{
@@ -49,22 +51,16 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
         })
     }
 
-    function handleDeleteFish(id, qty){
-        const newFishes = fishes.filter(fish => fish.id !== id);
+    function handleDeleteFish(housing){
+        const newFishes = fishes.filter(fish => fish.id !== housing.id);
         setFishes(newFishes);
-        onAddFish(0 - Number(qty), aquariumId);
+        onAddFish(housing.aquarium);
     }
 
-    function handleEditFish(editFish){
-        let total = 0
-        const newFishes = fishes.map(fish => {
-            if (fish.id === editFish.id){
-                total -= Number(fish.qty);
-                return editFish
-            }
-            return fish})
-        setFishes(newFishes);
-        onAddFish(total + editFish.qty, aquariumId);
+    function handleEditFish(housing){
+        const fishList = fishes.map(fish => fish.id === housing.id ? housing : fish);
+        setFishes(fishList);
+        onAddFish(housing.aquarium);
     }
 
     if (errors){
@@ -77,7 +73,7 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
             <div>
                 {displayErrors}
             </div>
-            {addFish ? <FishContainer fishList={allFish} onAddFish={handleAddFish} canAddFish={true}/> : null}
+            {addFish ? <FishContainer fishList={allFish} onAddFish={handleAddFish} canAddFish={waterType}/> : null}
             {<FishContainer fishList={fishes} editable={editable} onDeleteFish={handleDeleteFish} onEditFish={handleEditFish} />}
         </div>
     )

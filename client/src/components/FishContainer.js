@@ -10,10 +10,20 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     const [search, setSearch] = useState("");
     const [seeOnly, setSeeOnly] = useState(false);
     const [sort, setSort] = useState("All");
-
+    
     useEffect(()=>{
-        setFishes(fishList)
-    },[fishList])
+        if(fishList){
+            setFishes(fishList)
+        }
+        // else{
+        //     fetch('/fish')
+        //     .then(r => r.json())
+        //     .then(fishes => setFishes(fishes))
+        // }
+        if (canAddFish){
+            setSort(canAddFish);
+        }
+    },[fishList, canAddFish])
 
     function handleSearch(word){
         setSearch(word);
@@ -28,6 +38,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     function handleSort(type){
         setSort(type)
     }
+
 
 
     let sortedFishes = sort === "All" ? fishes : fishes.filter(fish => fish.fish.water_type === sort)
@@ -46,6 +57,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
         }
         return res
     }
+
     if(seeOnly){
         return(
             <div>  
@@ -56,12 +68,13 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
 
         )
     }
+
     if(!editable && !onAddFish){
         return(
             <div>
                 { fishes.length === 0 ? <Title title={"There are No Fish in this Aquarium!"}/> : 
                     <div>
-                        <Title title={"Fish"}/>
+                        {/* <Title title={"Fish"}/> */}
                         {seeAllFish ? <Search onSearch={handleSearch} onSort={handleSort}/> : <Search onSearch={handleSearch}/>}
                     </div>}
                 {setCards(fishesToRender)}
@@ -76,7 +89,7 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
                 {canAddFish ? 
                     <div>
                         <Title title={"Add Fishes"}/>
-                        <Search onSearch={handleSearch} onSort={handleSort}/>
+                        <Search onSearch={handleSearch}/>
                     </div>
                      :
                     fishes.length === 0 ? <Title title={"You Have No Fish in this Aquarium!"}/> :

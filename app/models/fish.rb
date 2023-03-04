@@ -4,6 +4,7 @@ class Fish < ApplicationRecord
     validates :name, presence: true
     validates :care_level, presence: true
     validates :care_level, inclusion: {in: ["Easy", "Medium", "Hard"]}
+    validates :water_type, inclusion: {in: ["Saltwater", "Freshwater"]}
     validates :temperament, presence: true
     validates :lifespan, presence: true
     validates :size, presence: true

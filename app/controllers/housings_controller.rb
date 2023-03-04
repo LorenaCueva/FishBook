@@ -1,28 +1,28 @@
 class HousingsController < ApplicationController
     before_action :find_housing, only:[:destroy, :update]
     before_action :auth, only:[:update, :destroy]
-    # before_action :authorize, only:[:create]
 
     def destroy
         @housing.destroy
-        head :no_content
+        render json: @housing, status: :ok
     end
 
     def update
-        @housing.update!(housing_params)
+        @housing.update!(update_params)
         render json: @housing, status: :created
     end
 
     def create
-        return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless Aquarium.find(params[:id]).user_id == session[:user_id]
-        housing = Housing.where("aquarium_id = ? AND fish_id = ?", params[:aquarium_id], params[:fish_id])
-        if housing == [] 
-            new = Housing.create!(housing_params)
-            render json: new, status: :created
+        aquarium = Aquarium.find(params[:id])
+        return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless aquarium.user_id == session[:user_id]
+        housing = housing = aquarium.housings.find_by_fish_id(params[:fish_id])
+        if housing
+            total = housing.qty.to_i + params[:qty].to_i
+            housing.update(qty: total)
+            render json: housing, status: :created
         else
-            total = housing[0].qty.to_i + params[:qty].to_i
-            housing[0].update(qty: total)
-            render json: housing[0], status: :created
+            new = Housing.create!(housing_params)
+            render json: new, status: :created         
         end 
     end
 
@@ -34,6 +34,10 @@ class HousingsController < ApplicationController
 
     def housing_params
         params.permit(:qty, :fish_id, :aquarium_id)
+    end
+
+    def update_params
+        params.permit(:qty)
     end
 
     def auth

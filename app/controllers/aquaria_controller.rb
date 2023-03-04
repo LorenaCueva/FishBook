@@ -1,5 +1,5 @@
 class AquariaController < ApplicationController
-    before_action :find_aquarium, only:[:destroy, :update, :show]
+    before_action :find_aquarium, only:[:destroy, :update]
     before_action :authorize, only:[:index, :show]
     before_action :auth, only: [:destroy, :update]
 
@@ -9,9 +9,9 @@ class AquariaController < ApplicationController
         render json: aquariums, status: :ok
     end
 
-    def show
-        fishes = @aquarium.housings
-        render json: fishes, status: :ok
+     def show
+        aquariums = Fish.find(params[:id]).aquaria.uniq
+        render json: aquariums, status: :ok
     end
 
     def update

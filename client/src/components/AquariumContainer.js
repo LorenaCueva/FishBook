@@ -24,7 +24,7 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
             navigate("/login")
         }
         else if(fishId){
-            fetch(`/fish/${fishId}`)
+            fetch(`/fish/${fishId}/aquariums`)
             .then(r => r.json())
             .then(aquariums => {
                 setAquariums(aquariums)})
@@ -99,10 +99,10 @@ function AquariumContainer({user, showAll = null, allFish = null, fishId = null}
         return res;
     }
 
-    function handleAddFishToCard(qty, aquariumId){
-        const aq = aquariums.filter(aquarium => aquarium.id === aquariumId)
-        aq[0].fish_qty = Number(aq[0].fish_qty) + Number(qty)
-        const newAquariums = aquariums.map(aquarium => aquarium.id === aquariumId ? aq[0] : aquarium)
+    function handleAddFishToCard(newAquarium){
+        // const aq = aquariums.filter(aquarium => aquarium.id === aquariumId)
+        // aq[0].fish_qty = Number(aq[0].fish_qty) + Number(qty)
+        const newAquariums = aquariums.map(aquarium => aquarium.id === newAquarium.id ? newAquarium : aquarium)
         setAquariums(newAquariums)
     }
   

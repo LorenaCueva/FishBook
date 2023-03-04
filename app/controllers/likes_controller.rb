@@ -14,6 +14,8 @@ class LikesController < ApplicationController
         render json: aquarium, status: :ok
     end
 
+    private
+
     def like_params
         params.permit(:aquarium_id)
     end

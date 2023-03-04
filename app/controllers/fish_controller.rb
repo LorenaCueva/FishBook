@@ -1,5 +1,5 @@
 class FishController < ApplicationController
-    # before_action: :authorize
+    before_action :authorize
 
     def index
         res = []
@@ -8,9 +8,20 @@ class FishController < ApplicationController
         render json: res, status: :ok
     end
 
-    def show
-        aquariums = Fish.find(params[:id]).aquaria.uniq
-        render json: aquariums, status: :ok
+    # def show
+    #     aquarium = Aquarium.find(params[:id])
+    #     render json: aquarium, serializer: AquariumFishSerializer, status: :ok
+    # end
+
+    def create
+        fish = Fish.create!(fish_params)
+        render json: fish, status: :created
+    end
+
+    private
+
+    def fish_params
+        params.permit(:name, :temperament, :image_url, :lifespan, :size, :diet, :water_type, :care_level)
     end
 
 end

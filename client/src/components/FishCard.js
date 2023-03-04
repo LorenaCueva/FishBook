@@ -10,9 +10,11 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
 
     const [edit, setEdit] = useState(false);
     const [formData, setFormData] = useState("")
-    const {name, care_level, temperament, lifespan, size, diet, water_type, id} = fish.fish;
+    const {name, care_level, temperament, lifespan, size, diet, water_type, id, image_url} = fish.fish;
     const [errors, setErrors] = useState([]);
     const waterColor = water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
+    let image = image_url === null || image_url === "" ? "../fish.png" : image_url;
+
 
     useEffect(()=>{
         setFormData({qty: fishQty})
@@ -23,7 +25,8 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
             method: "DELETE"})
             .then(r => {
                 if(r.ok){
-                   onDelete(fish.id, fishQty)
+                    r.json().then(housing => {
+                        onDelete(housing)})
                 }
                 else{
                     r.json().then(error => console.log(error))
@@ -52,9 +55,9 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
         .then(r => {
             if(r.ok){
                 r.json()
-                .then(edit => {
-                    setFormData({qty: edit.qty})
-                    onEdit(edit)})
+                .then(housing => {
+                    onEdit(housing)
+                })
             }
             else{
                 r.json().then(error => 
@@ -69,8 +72,11 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
 
     function handleAddFish(){
         const qty = window.prompt("Qty: ");
-        if(qty){
+        if(qty && !isNaN(qty)){
             onAddFish(id, qty)
+        }
+        else{
+            setErrors(["Qty not correct. Fish not added"])
         }
     }
 
@@ -94,7 +100,7 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
             <h5 className={`${headerTextColor}-text`}>{name}</h5>
         </li>
         <li className="center-align collection-item">
-            <img src={"../fish.png"} alt={"fish img"}/>
+            <img src={image} alt={"fish img"}/>
         </li>
         <li className={`${waterColor}collection-item center-align`}>
         {edit ? 
