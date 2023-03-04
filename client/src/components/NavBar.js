@@ -1,21 +1,34 @@
 import {NavLink, Outlet} from 'react-router-dom';
 import {useContext } from 'react';
 import { UserContext } from './UserContext';
+import { useNavigate } from "react-router-dom";
 
 function NavBar(){
 
     const { user, setUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
-    function handleLogOut(){
-          fetch("/logout", {
-            method: "DELETE"
-          })
-          .then(r=> {
-            if(r.ok){
-              setUser(user => null);
-            }
+    async function handleLogOut() {
+        try {
+          await LogOut();
+          navigate("/login");
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      
+      async function LogOut() {
+        try {
+          const response = await fetch("/logout", {
+            method: "DELETE",
           });
-    }
+          if (response.ok) {
+            setUser(null);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
 
     return(
      <div>
