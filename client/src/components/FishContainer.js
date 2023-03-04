@@ -15,11 +15,11 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
         if(fishList){
             setFishes(fishList)
         }
-        // else{
-        //     fetch('/fish')
-        //     .then(r => r.json())
-        //     .then(fishes => setFishes(fishes))
-        // }
+        else{
+            fetch('/fish')
+            .then(r => r.json())
+            .then(fishes => setFishes(fishes))
+        }
         if (canAddFish){
             setSort(canAddFish);
         }
@@ -38,8 +38,6 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
     function handleSort(type){
         setSort(type)
     }
-
-
 
     let sortedFishes = sort === "All" ? fishes : fishes.filter(fish => fish.fish.water_type === sort)
 
@@ -60,12 +58,11 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
 
     if(seeOnly){
         return(
-            <div>  
-                {setCards(fishesToRender)}
-               
+            <div className="row">  
+                <div className="col s12 offset-s4">
+                    {setCards(fishesToRender)}
+                </div>
             </div>
-            
-
         )
     }
 
@@ -74,7 +71,6 @@ function FishContainer({fishList, editable = false, canAddFish = false, onAddFis
             <div>
                 { fishes.length === 0 ? <Title title={"There are No Fish in this Aquarium!"}/> : 
                     <div>
-                        {/* <Title title={"Fish"}/> */}
                         {seeAllFish ? <Search onSearch={handleSearch} onSort={handleSort}/> : <Search onSearch={handleSearch}/>}
                     </div>}
                 {setCards(fishesToRender)}

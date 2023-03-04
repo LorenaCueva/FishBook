@@ -76,6 +76,8 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
             {addFish ? <FishContainer fishList={allFish} onAddFish={handleAddFish} canAddFish={waterType}/> : null}
             {<FishContainer fishList={fishes} editable={editable} onDeleteFish={handleDeleteFish} onEditFish={handleEditFish} />}
         </div>
+
+        //checking editable
     )
 }
 export default AquariumInfo;

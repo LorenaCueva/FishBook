@@ -1,19 +1,20 @@
 import { freshWaterColor, saltwaterColor, headerTextColor, hoverColor} from "../Colors";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import AquariumForm from "./AquariumForm";
+import { UserContext } from "./UserContext";
 
-function AquariumCard({aquarium, onDelete, onEdit, onCardClick, userId, onLike}){
+function AquariumCard({aquarium, onDelete, onEdit, onCardClick, onLike}){
 
 
     const {id, name, galons, filter, heater, comments, by, water_type, image_url, user_id, fish_qty} = aquarium;
 
-
+    const { user } = useContext(UserContext);
     const [isOnEdit, setIsOnEdit] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
-    const [liked, setLiked] = useState(aquarium.likes.includes(userId));
+    const [liked, setLiked] = useState(aquarium.likes.includes(user.id));
     const [likes, setLikes] = useState(aquarium.likes.length)
 
-    const editable = userId === aquarium.user_id;
+    const editable = user.id === user_id;
 
     const color = aquarium.water_type === "Freshwater" ? freshWaterColor : saltwaterColor;
 
@@ -56,9 +57,11 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, userId, onLike})
                 })
                 .then(r => {
                     if(r.ok){
-                        r.json().then(aq => onLike(aq))
-                        setLiked(false)
-                        setLikes(likes => likes-1)
+                        r.json().then(aq => {
+                            onLike(aq)
+                            setLiked(false)
+                            setLikes(aq.likes.length)
+                            })
                     }
                     else{
                         r.json().then(error => console.log(error))
@@ -78,9 +81,10 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, userId, onLike})
                 })
                     .then(r => {
                         if(r.ok){
-                            r.json().then(aq => onLike(aq))
-                            setLiked(true)
-                            setLikes(likes => likes+1)
+                            r.json().then(aq => {
+                                onLike(aq)
+                                setLiked(true)
+                                setLikes(aq.likes.length)})
                         }
                         else{
                             r.json().then(error => console.log(error))

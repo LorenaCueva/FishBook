@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { UserContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
 import Title from "./Title";
 
 
-function LogIn({user = null, setUser, onLogIn}){
+function LogIn(){
+
+    const { setUser } = useContext(UserContext);
 
     const [credentials, setCredentials] = useState({
         username: "",
@@ -16,11 +19,16 @@ function LogIn({user = null, setUser, onLogIn}){
 
 
     useEffect(()=> {
-        if (user){
-                navigate('/myAquariums');
+        fetch('/me').then(r => {
+            if(r.ok){
+                r.json().then(user => {
+                    setUser(user);
+                    navigate('/myAquariums')
+                })
             }
+        })
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[user])
+    },[])
 
     function handleFormChange(e){
         const name = e.target.name;

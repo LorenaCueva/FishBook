@@ -95,7 +95,7 @@ function FishCard({fish, editable, onDelete = null, onEdit = null, canAddFish = 
                                 <i className="padding-center small material-icons white-text" onClick={handleDeleteFish}>delete</i>
                             </div> : null}
                 {canAddFish ? <i className="padding-center small material-icons white-text" onClick={handleAddFish}>add_circle</i> : null}
-                {seeAllFish ? <i className="padding-center small material-icons white-text" onClick={()=>seeFish(id)}>remove_red_eye</i> : null}
+                {seeAllFish ? <i className="padding-center small material-icons white-text" onClick={()=>seeFish(id)}>bubble_chart</i> : null}
             </div>
             <h5 className={`${headerTextColor}-text`}>{name}</h5>
         </li>
