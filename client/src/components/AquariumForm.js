@@ -49,7 +49,7 @@ function AquariumForm({showForm, onSubmitForm, editData = null}){
 
     function handleSubmitForm(e){
         e.preventDefault();
-        fetch(`${isEditForm ? `/aquariums/${editData.id}` : "/aquariums"}`,{
+        fetch(`${isEditForm ? `/aquaria/${editData.id}` : "/aquaria"}`,{
             method: `${isEditForm ? "PATCH" : "POST"}`,
             headers: {"Content-type": "application/json"},
             body: JSON.stringify(formData)

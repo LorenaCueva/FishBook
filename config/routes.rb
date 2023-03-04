@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   # Leave this here to help deploy your app later!
   resources :users, only: [:create]
   resources :fish, only: [:index, :create]
+  resources :aquaria, only: [:index, :destroy, :update, :create]
 
 
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
@@ -12,21 +13,19 @@ Rails.application.routes.draw do
   
   get "/me", to: "users#show"
 
-  get "/fish/:id/aquariums", to: "aquaria#show"
+  get "/fish/:id/aquaria", to: "aquaria#show"
+  # get "/aquariums", to: "aquaria#index"
 
-  get "/aquariums", to: "aquaria#index"
-  get "/aquariums/:id", to: "aquaria#show"
+  get "/aquaria/:id/fish", to: "aquaria_fish#show"
 
-  get "/aquariums/:id/fish", to: "aquaria_fish#show"
+  # post "/aquariums", to: "aquaria#create"
+  # delete "/aquariums/:id", to: "aquaria#destroy"
+  # patch "/aquariums/:id", to: "aquaria#update"
 
-  post "/aquariums", to: "aquaria#create"
-  delete "/aquariums/:id", to: "aquaria#destroy"
-  patch "/aquariums/:id", to: "aquaria#update"
+  post "/aquaria/:id/housings", to: "housings#create"
 
-  post "/aquariums/:id/housings", to: "housings#create"
-
-  post "/likes/aquariums/:aquarium_id", to: "likes#create"
-  delete "/likes/aquariums/:aquarium_id", to: "likes#destroy"
+  post "/likes/aquaria/:aquarium_id", to: "likes#create"
+  delete "/likes/aquaria/:aquarium_id", to: "likes#destroy"
 
   delete "/housings/:id", to: "housings#destroy"
   patch "/housings/:id", to: "housings#update"

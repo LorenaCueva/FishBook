@@ -25,7 +25,7 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, onLike}){
 
 
         function handleDelete(){
-            fetch(`/aquariums/${id}`,{
+            fetch(`/aquaria/${id}`,{
                 method: "DELETE"
             })
             .then(r => {
@@ -52,7 +52,7 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, onLike}){
 
         function handleLikeClick(){
             if(liked) {
-                fetch(`/likes/aquariums/${id}`, {
+                fetch(`/likes/aquaria/${id}`, {
                     method: "DELETE"
                 })
                 .then(r => {
@@ -70,7 +70,7 @@ function AquariumCard({aquarium, onDelete, onEdit, onCardClick, onLike}){
             }
     
             else{
-                fetch(`/likes/aquariums/${id}`, {
+                fetch(`/likes/aquaria/${id}`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

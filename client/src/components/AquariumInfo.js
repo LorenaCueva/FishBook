@@ -11,7 +11,7 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
     let displayErrors = null; 
 
     useEffect(()=>{
-        fetch(`/aquariums/${aquariumId}/fish`)
+        fetch(`/aquaria/${aquariumId}/fish`)
         .then(r => r.json())
         .then(aquarium => {
             setWaterType(aquarium.water_type)
@@ -27,7 +27,7 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
 
     function handleAddFish(fishId, qty){
         setErrors(null)
-        fetch(`/aquariums/${aquariumId}/housings`,{
+        fetch(`/aquaria/${aquariumId}/housings`,{
             method:"POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({aquarium_id: aquariumId, fish_id: fishId, qty: qty})
@@ -76,8 +76,6 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
             {addFish ? <FishContainer fishList={allFish} onAddFish={handleAddFish} canAddFish={waterType}/> : null}
             {<FishContainer fishList={fishes} editable={editable} onDeleteFish={handleDeleteFish} onEditFish={handleEditFish} />}
         </div>
-
-        //checking editable
     )
 }
 export default AquariumInfo;

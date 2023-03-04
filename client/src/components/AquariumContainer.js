@@ -25,12 +25,12 @@ function AquariumContainer({showAll = null, fishId = null}){
         }
         else {
             if(fishId){
-                fetch(`/fish/${fishId}/aquariums`)
+                fetch(`/fish/${fishId}/aquaria`)
                 .then(r => r.json())
                 .then(aquariums => setAquariums(aquariums))
             }
             else{
-                fetch("/aquariums")
+                fetch("/aquaria")
                 .then(res => res.json())
                 .then(aquariums => setAquariums(aquariums))
                 .catch(error => console.log(error))
@@ -104,6 +104,7 @@ function AquariumContainer({showAll = null, fishId = null}){
         setAquariums(newAquariums)
     }
     
+    if(user){
     if(showForm){
         return(
             <div>
@@ -126,9 +127,13 @@ function AquariumContainer({showAll = null, fishId = null}){
                 {showInfo ? <AquariumInfo aquariumId={showInfo} editable={editable} onAddFish={handleAddFishToCard}/> : null}
 
             </div>
-            
         )
     }
+}
+else{
+    return(<></>)
+}
+
    
 }
 export default AquariumContainer;

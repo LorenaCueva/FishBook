@@ -1,10 +1,9 @@
-import {NavLink, Outlet, useNavigate} from 'react-router-dom';
+import {NavLink, Outlet} from 'react-router-dom';
 import {useContext } from 'react';
 import { UserContext } from './UserContext';
 
 function NavBar(){
 
-    const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext);
 
     function handleLogOut(){
