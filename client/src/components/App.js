@@ -21,8 +21,8 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route index element={<LogIn/>}></Route>
-              <Route path="/login" element={<LogIn/>}></Route>
-              {/* <Route path='/home' element={<LogIn onLogIn={handleLogIn}/>}></Route> */}
+              <Route path="/logout" element={<LogIn logout={true}/>}></Route>
+              <Route path='/login' element={<LogIn/>}></Route>
               <Route element={<NavBar/>}>
                 <Route path='/myAquariums' element={<AquariumContainer showAll={false}/>}></Route>
                 <Route path='/aquariums' element={<AquariumContainer showAll={true}/>}></Route>

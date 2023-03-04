@@ -11,7 +11,7 @@ function NavBar(){
     async function handleLogOut() {
         try {
           await LogOut();
-          navigate("/login");
+          navigate("/logout");
         } catch (error) {
           console.error(error);
         }
@@ -37,7 +37,7 @@ function NavBar(){
             <div className="nav-wrapper">
                 <div className="brand-logo right">{user ? `${user.username}'s Fishbook` : null}</div>
                 <ul className="left padding-left hide-on-med-and-down">
-                    <li><NavLink to="/login" onClick={handleLogOut}>LogOut</NavLink></li>
+                    <li><NavLink to="/logout" onClick={handleLogOut}>LogOut</NavLink></li>
                     <li><NavLink to="/myAquariums">My Aquariums</NavLink></li>
                     <li><NavLink to="/fish">Fish</NavLink></li>
                     <li><NavLink to="/aquariums">Community</NavLink></li>

@@ -21,7 +21,7 @@ function AquariumContainer({showAll = null, fishId = null}){
 
     useEffect(() => {
         if(user == null){
-            navigate("/login")
+            navigate("/")
         }
         else {
             if(fishId){

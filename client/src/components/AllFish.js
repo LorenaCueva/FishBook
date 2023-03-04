@@ -17,7 +17,7 @@ function AllFish(){
 
     useEffect(()=>{
         if(!user){
-            navigate('/login')
+            navigate('/')
         }
         else{
             fetch('/fish')

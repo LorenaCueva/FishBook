@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Title from "./Title";
 
 
-function LogIn(){
+function LogIn({logout = false}){
 
     const { setUser } = useContext(UserContext);
 
@@ -19,14 +19,15 @@ function LogIn(){
 
 
     useEffect(()=> {
-        fetch('/me').then(r => {
+        if(!logout){
+            fetch('/me').then(r => {
             if(r.ok){
                 r.json().then(user => {
                     setUser(user);
                     navigate('/myAquariums')
                 })
             }
-        })
+        })}
         // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
@@ -76,7 +77,6 @@ function LogIn(){
         .then(res => {
             if(res.ok){
                 res.json().then(user => {
-                    // onLogIn();
                     setUser(user);
                     navigate('/myAquariums')
                 })
