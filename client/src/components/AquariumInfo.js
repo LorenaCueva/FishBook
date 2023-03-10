@@ -26,7 +26,7 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
     }
 
     function handleAddFish(fishId, qty){
-        setErrors(null)
+        setErrors(null);
         fetch(`/aquaria/${aquariumId}/housings`,{
             method:"POST",
             headers: {"Content-Type": "application/json"},
@@ -73,7 +73,7 @@ function AquariumInfo({aquariumId, editable, allFish, onAddFish}){
             <div>
                 {displayErrors}
             </div>
-            {addFish ? <FishContainer fishList={allFish} onAddFish={handleAddFish} canAddFish={waterType}/> : null}
+            {addFish ? <FishContainer onAddFish={handleAddFish} canAddFish={waterType}/> : null}
             {<FishContainer fishList={fishes} editable={editable} onDeleteFish={handleDeleteFish} onEditFish={handleEditFish} />}
         </div>
     )

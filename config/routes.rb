@@ -14,13 +14,8 @@ Rails.application.routes.draw do
   get "/me", to: "users#show"
 
   get "/fish/:id/aquaria", to: "aquaria#show"
-  # get "/aquariums", to: "aquaria#index"
 
   get "/aquaria/:id/fish", to: "aquaria_fish#show"
-
-  # post "/aquariums", to: "aquaria#create"
-  # delete "/aquariums/:id", to: "aquaria#destroy"
-  # patch "/aquariums/:id", to: "aquaria#update"
 
   post "/aquaria/:id/housings", to: "housings#create"
 
@@ -29,6 +24,7 @@ Rails.application.routes.draw do
 
   delete "/housings/:id", to: "housings#destroy"
   patch "/housings/:id", to: "housings#update"
+
 
   
 

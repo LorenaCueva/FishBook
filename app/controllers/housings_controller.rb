@@ -15,7 +15,7 @@ class HousingsController < ApplicationController
     def create
         aquarium = Aquarium.find(params[:id])
         return render json: {errors: ["Not Authorized"]}, status: :unauthorized unless aquarium.user_id == session[:user_id]
-        housing = housing = aquarium.housings.find_by_fish_id(params[:fish_id])
+        housing = aquarium.housings.find_by_fish_id(params[:fish_id])
         if housing
             total = housing.qty.to_i + params[:qty].to_i
             housing.update(qty: total)

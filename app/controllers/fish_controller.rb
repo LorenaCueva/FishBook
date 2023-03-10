@@ -8,11 +8,6 @@ class FishController < ApplicationController
         render json: res, status: :ok
     end
 
-    # def show
-    #     aquarium = Aquarium.find(params[:id])
-    #     render json: aquarium, serializer: AquariumFishSerializer, status: :ok
-    # end
-
     def create
         fish = Fish.create!(fish_params)
         render json: fish, status: :created
